@@ -25,4 +25,5 @@ export const API_NOTIFICATION_MESSAGES = {
 export const SERVICE_URLS = {
     userSignup : { url:"/users/signup", method: 'POST'},
     userLogin : { url:"/users/login", method: 'POST'},
+    uploadFile : { url:"/users/file/upload", method: 'POST'}
 }
