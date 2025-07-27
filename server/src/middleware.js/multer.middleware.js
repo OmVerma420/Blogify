@@ -6,51 +6,8 @@ import multer from 'multer';
 
 const url = 'http://localhost:8000';
 
-// Method 1: Using your existing GridFS storage (Enhanced debugging)
-export const uploadImage = (req, res) => {
-    console.log('=== UPLOAD IMAGE REQUEST DEBUG ===');
-    console.log('Request method:', req.method);
-    console.log('Request URL:', req.url);
-    console.log('Content-Type header:', req.headers['content-type']);
-    console.log('Request body keys:', Object.keys(req.body || {}));
-    console.log('Request file:', req.file);
-    console.log('Request files:', req.files);
-    
-    // Check if multer ran
-    if (req.multerError) {
-        console.log('❌ Multer Error:', req.multerError);
-        return res.status(400).json(
-            new ApiError(400, `File upload error: ${req.multerError.message}`)
-        );
-    }
 
-    if (!req.file) {
-        console.log('❌ No file found in request');
-        console.log('Available request properties:', Object.keys(req).filter(key => 
-            !['socket', 'connection', 'headers', 'url', 'method'].includes(key)
-        ));
-        
-        return res.status(400).json(
-            new ApiError(400, "No file uploaded. Please select a file.")
-        );
-    }
-
-    console.log('✅ File found:', {
-        filename: req.file.filename,
-        originalname: req.file.originalname,
-        mimetype: req.file.mimetype,
-        size: req.file.size,
-        id: req.file.id
-    });
-
-    const imageUrl = `${url}/file/${req.file.filename}`;
-
-    return res.status(200).json(
-        new ApiResponse(200, imageUrl, "Image successfully stored in Database")
-    );
-};
-
-// Method 2: Manual GridFS Upload (Alternative approach)
+// Manual GridFS Upload
 const memoryStorage = multer.memoryStorage();
 const memoryUpload = multer({ 
     storage: memoryStorage,
@@ -100,7 +57,7 @@ export const uploadImageManual = async (req, res) => {
 
         // Handle upload completion
         uploadStream.on('finish', (file) => {
-            console.log('✅ File uploaded successfully:', file);
+            console.log('File uploaded successfully:', file);
             const imageUrl = `${url}/file/${filename}`;
             
             res.status(200).json(
@@ -110,23 +67,23 @@ export const uploadImageManual = async (req, res) => {
 
         // Handle upload errors
         uploadStream.on('error', (error) => {
-            console.error('❌ Upload stream error:', error);
+            console.error('Upload stream error:', error);
             res.status(500).json(
                 new ApiError(500, "File upload failed")
             );
         });
 
-        // Write buffer to stream
+        // buffer to stream
         uploadStream.write(req.file.buffer);
         uploadStream.end();
 
     } catch (error) {
-        console.error('❌ Manual upload error:', error);
+        console.error('Manual upload error:', error);
         res.status(500).json(
             new ApiError(500, "Internal server error during file upload")
         );
     }
 };
 
-// Export the memory upload middleware for manual method
+
 export { memoryUpload };
