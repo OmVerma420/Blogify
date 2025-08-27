@@ -20,36 +20,36 @@ const generateAccessAndRefreshToken = async (userId) => {
 }
 
 
-export const signupUser = asyncHandler( async(req , res) => {
-    const {name , username , password} = req.body;
+export const Register = asyncHandler( async(req , res) => {
+    const {name , email , password} = req.body;
     console.log("username" , username);
     console.log("Request Body", req.body);
 
 
-    if([name , username , password].some((field) => field ?.trim() === "")) {
+    if([name , email , password].some((field) => field ?.trim() === "")) {
         throw new ApiError(400 , "All fields are required");
     }
 
-    const existingUser = await User.findOne({username});
+    const existingUser = await User.findOne({email});
     if(existingUser){
         throw new ApiError(400 , "Username already exists");
     }
 
     const user = await User.create({
         name,
-        username,
+        email,
         password
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password"
+        "-password -refreshToken"
     )
     if(!createdUser){
-        throw new ApiError(500, "User not found");
+        throw new ApiError(500, "Something went wrong while registering use");
     }
 
     return res.status(201).json(
-        new ApiResponse(201 , createdUser , "User created successfully")
+        new ApiResponse(201 , createdUser , "User registered  successfully")
     )
 
 })

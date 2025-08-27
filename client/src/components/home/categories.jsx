@@ -1,76 +1,41 @@
-
-import { Box, Button , Table , TableBody, TableRow , TableCell , TableHead , styled} from "@mui/material";
+import React from 'react';
 import { CategoriesData } from "../../constants/categoriesData.js";
-import {Link, useSearchParams} from "react-router-dom";
-
-const StyledTable = styled(Table)`
-  margin-top: 20px;
-  border: 1px solid #ccc;
-`;
-
-const StyledTableRow = styled(TableRow)`
-  &:hover {
-    background-color: #f5f5f5e7;
-  }
-`;
-
-const StyledTableCell = styled(TableCell)`
-  font-size: 16px;
-  padding: 12px;
-  font-weight: 500;
-`;
-const StyledHeaderCell = styled(TableCell)`
-  background-color: #1976d2;
-  color: #fff;
-  font-weight: bold;
-  font-size: 18px;
-`;
-
-const Container = styled(Box)`
-  width: 90%;
-  margin: 20px auto;
-`;
-
+import { Link, useSearchParams } from "react-router-dom";
 
 export const Categories = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category')
 
-    return (
-        <Container>
-            <Link to={`/create?category=${category || ""}`}>
-            <Button  variant="contained">Create Blog</Button>
-            </Link>
+  return (
+    <div className="w-[90%] mx-auto my-5">
+      <Link to={`/create?category=${category || ""}`}>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Create Blog
+        </button>
+      </Link>
 
-            <StyledTable>
-                <TableHead>
-                    <StyledTableRow>
-                        <StyledHeaderCell>
-                          <Link to='/' style={{textDecoration:'none', color:'inherit'}}>
-                              All Category
-                          </Link>
-                          </StyledHeaderCell>
-                    </StyledTableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        CategoriesData.map(category => (
-
-                            <TableRow key={category.id}>
-                                <StyledTableCell>
-                                  <Link to={`/?category=${category.name}`} style={{textDecoration:'none', color:'inherit'}}>
-                                      {category.name}
-                                  </Link>
-
-                                </StyledTableCell>
-                            </TableRow>
-                            )
-                        )
-                    }
-                    
-                </TableBody>
-            </StyledTable>
-
-        </Container>
-    )
+      <div className="mt-5 border border-gray-300 rounded">
+        <div className="bg-blue-600 text-white font-bold text-lg px-4 py-2">
+          <Link to='/' className="no-underline text-inherit">
+            All Category
+          </Link>
+        </div>
+        
+        <div className="divide-y divide-gray-200">
+          {CategoriesData.map(category => (
+            <div key={category.id} className="hover:bg-gray-100 transition-colors">
+              <div className="px-4 py-3 text-base font-medium">
+                <Link 
+                  to={`/?category=${category.name}`} 
+                  className="no-underline text-inherit hover:text-blue-600"
+                >
+                  {category.name}
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }

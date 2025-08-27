@@ -1,47 +1,28 @@
-import { useState } from 'react'
-
-import DataProvider from './context/DataProvider.jsx'
-import { BrowserRouter, Routes, Route, Navigate, Outlet} from 'react-router-dom'
-
-//components
-import Login from './components/account/Login.jsx'
-import {Home} from './components/home/Home.jsx'
-import Header from './components/header/Header.jsx'
-import CreatePost from './components/create/CreatePost.jsx'
-
-const PrivateRoute = ({ isAuthenticated , ...props}) => {
-
-  return isAuthenticated ?
-     <>
-     <Header/>
-     <Outlet/>
-     </>
-    : <Navigate replace to={'/login'}/>
-}
+import React from 'react'
+import { BrowserRouter, Routes ,Route } from 'react-router-dom'
+import { RouteIndex, RouteSignIn, RouteSignUp } from './helpers/RouteName'
+import Index from './pages/Index'
+import Layout from './Layout/Layout'
+import AuthLayout from './Layout/AuthLayout'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 
 function App() {
-
-  const [isAuthenticated, isUserAuthenticated] = useState(false);
   return (
-    <DataProvider>
       <BrowserRouter>
-      
-        <div style={{marginTop: 64}}>
-          <Routes>
-            <Route path='/login' element={<Login isUserAuthenticated={isUserAuthenticated} />}/>
-
-            <Route path='/' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
-                <Route path='/' element={<Home/>}/>
-            </Route>
-
-            <Route path='/create' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
-                <Route path='/create' element={<CreatePost/>}/>
-            </Route>
-
-          </Routes>
-        </div>
+        <Routes>
+          <Route path={RouteIndex} element={<Layout />}>
+            <Route index element={<Index />} />
+          </Route>
+          
+          <Route path={RouteSignIn} element={<AuthLayout />}>
+            <Route index element={<SignIn/>}/>
+          </Route>
+          <Route path={RouteSignUp} element={<AuthLayout />}>
+            <Route index element={<SignUp/>}/>
+          </Route>
+        </Routes>
       </BrowserRouter>
-    </DataProvider>
   )
 }
 

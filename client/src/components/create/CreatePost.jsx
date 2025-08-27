@@ -1,88 +1,47 @@
-import {Box, styled , Button ,FormControl, InputBase, TextareaAutosize} from '@mui/material'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DataContext } from '../../context/DataProvider.jsx';
-import {API} from '../../service/api.js'
+import { API } from '../../service/api.js';
 
-const Container = styled(Box)`
-margin : 50px 100px
-`
-
-const Image = styled("img")({
-    width: "100%",
-    height: "60vh",
-    objectFit:"cover",
-
-})
-
-const Form = styled(FormControl)`
-display : flex;
-flex-direction : row;
-margin-top : 10px;
-`
-const Input = styled(InputBase)`
-flex: 1;
-margin: 0 30px;
-font-size: 25px;
-`
-const Textarea = styled(TextareaAutosize)`
-  width: 100%;
-  margin-top: 20px;
-  font-size: 18px;
-  border: none;
-  outline: none;
-  resize: none;
-  font-family: inherit;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-`
 const initialPost = {
     title: '',
     description: '',
     image: '',
-    category:'',
-    username:'',
+    category: '',
+    username: '',
     createDate: new Date(),
 }
+
 const CreatePost = () => {
-
-    const [post , setPost] = useState(initialPost);
-    const [file , setFile] = useState(null)
-
-    const {data} = useContext(DataContext)
-
+    const [post, setPost] = useState(initialPost);
+    const [file, setFile] = useState(null);
+    const { data } = useContext(DataContext);
     const location = useLocation();
+    const url = post.image ? post.image : "create-blog-banner.jpg";
 
-    const url = post.image? post.image :"create-blog-banner.jpg"
-
-    useEffect(()=> {
+    useEffect(() => {
         const getImage = async () => {
-            if(file){
+            if (file && data?.username) {
                 const formData = new FormData();
-                formData.append("name",file.name);
                 formData.append("file", file);
+                formData.append("username", data.username);
 
-                //API call
                 try {
                     const response = await API.uploadFile(formData);
                     if (response?.data) {
-                        setPost(prev => ({ ...prev, image: response.data }));
+                        setPost(prev => ({ ...prev, image: response.data.imageUrl }));
                     } else {
                         console.log("File upload failed:", response);
                     }
                 } catch (error) {
                     console.error("Error uploading file:", error);
                 }
-            }
-            else{
-                console.log("No file selected");
+            } else if (file && !data?.username) {
+                console.log("Username not available for upload");
             }
         }
         getImage();
-        
-    },[file])
+    }, [file, data]);
 
     useEffect(() => {
         setPost(prev => ({
@@ -93,43 +52,50 @@ const CreatePost = () => {
     }, [location.search, data]);
 
     const handleChange = (e) => {
-        setPost({...post ,[e.target.name]:[e.target.value] })
+        setPost({ ...post, [e.target.name]: e.target.value });
     }
-    return (
-        <Container>
-            <Image src={url} alt="banner" />
 
-            <Form>
-                <label 
-                htmlFor="File Input">
-                    <AddPhotoAlternateIcon fontSize='large' color='action' />
+    return (
+        <div className="mx-12 my-12">
+            <img src={url} alt="banner" className="w-full h-[60vh] object-cover" />
+
+            <form className="flex flex-row mt-2">
+                <label htmlFor="File Input" className="cursor-pointer">
+                    📷 Upload Image
                 </label>
 
                 <input 
-                type='file' 
-                id='File Input' 
-                style={{display: 'none'}} onChange={(e) => setFile(e.target.files[0])} />
+                    type='file' 
+                    id='File Input' 
+                    style={{ display: 'none' }} 
+                    onChange={(e) => setFile(e.target.files[0])} 
+                />
 
-                <Input 
-                placeholder='Title' 
-                onChange={handleChange} 
-                name='title'/>
+                <input 
+                    type="text" 
+                    placeholder='Title' 
+                    onChange={handleChange} 
+                    name='title' 
+                    className="flex-1 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 px-2 py-1"
+                />
 
-                <Button variant='contained'>
+                <button 
+                    type="button" 
+                    className="h-12 rounded-sm text-white bg-orange-600 hover:bg-orange-700 px-4 py-2"
+                >
                     Publish
-                </Button>
-        
-            </Form>
-            <Textarea 
+                </button>
+            </form>
+
+            <textarea 
                 minLength={5}
                 placeholder='Tell your Experience....'
                 name='description'
                 onChange={handleChange} 
-                />
-        </Container>
+                className="w-full mt-5 p-2 border border-gray-300 rounded"
+            />
+        </div>
     )
-
-        
 }
 
 export default CreatePost;

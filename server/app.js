@@ -11,7 +11,7 @@ app.use(cors({
     credentials: true // Allows browser sending cookies and authentication data in the req.
 }))
 
-app.use(express.json({limit: "5mb"}))
+app.use(express.json())
 app.use(express.urlencoded({extended: true , limit: "5mb"}))
 app.use(express.static("public"))
 app.use(cookieParser()) //This middleware allows you to read cookies sent from the browser via req.cookies.

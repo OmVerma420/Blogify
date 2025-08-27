@@ -3,17 +3,31 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 const userSchema = mongoose.Schema({
+    role:{
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
+        required: true,
+        trim: true
+    },
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
-    username: {
+    email: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true,
         trim: true,
-        index: true
+    },
+    bio:{ 
+        type: String,
+        trim: true
+    },
+    avatar:{ 
+        type: String,
+        trim: true
     },
     password: {
         type: String,
@@ -22,6 +36,15 @@ const userSchema = mongoose.Schema({
     refreshToken : {
         type: String,
     },
+    avatarFileId: { 
+        type: mongoose.Schema.Types.ObjectId, default: null 
+    },
+    avatarFilename: { 
+        type: String, default: null 
+    },
+    avatarUrl: { 
+        type: String, default: null 
+    }
 
 })
 
@@ -41,7 +64,7 @@ userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            username: this.username ,
+            email: this.eamil ,
             name: this.name
         }, 
         process.env.ACCESS_TOKEN_SECRET,
