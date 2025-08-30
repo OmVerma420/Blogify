@@ -12,10 +12,18 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { RouteSignIn } from "@/helpers/RouteName";
+import { RouteSignIn } from "@/helpers/routeName";
 import { Link } from "react-router-dom";
+import { getEnv } from "@/helpers/getEnv";
+import { useNavigate } from "react-router-dom";
+import { showToast } from "@/helpers/showToast";
+import GoogleLogin from "@/components/ui/GoogleLogin";
+
 
 function SignUp() {
+
+  const navigate = useNavigate();
+
   const formSchema = z.object({
     name: z.string().min(2, "Name should be atleast two character long"),
     email: z.string().email("Please enter a valid email address"),
@@ -36,13 +44,40 @@ function SignUp() {
     },
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
-  };
+const onSubmit = async (values) => {
+  try {
+    const response = await fetch(`${getEnv('VITE_API_BASE_URL')}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      showToast("error", data?.message || "Registration failed");
+      return; 
+    }
+
+    showToast("success", data?.message || "Registration successful");
+    
+    navigate(RouteSignIn);
+
+  } catch (error) {
+    showToast("error", error?.message || "Something went wrong");
+  }
+};
+
 
   return (
     <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">Create Your Account</h2>
+      <div>
+        <GoogleLogin/>
+        <div className="border my-5 flex justify-center items-center ">
+          <span className="absolute bg-white text-sm" >Or</span>
+        </div>
+      </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

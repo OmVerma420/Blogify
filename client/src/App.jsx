@@ -1,11 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Routes ,Route } from 'react-router-dom'
-import { RouteIndex, RouteSignIn, RouteSignUp } from './helpers/RouteName'
-import Index from './pages/Index'
-import Layout from './Layout/Layout'
-import AuthLayout from './Layout/AuthLayout'
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
+import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp } from './helpers/routeName'
+import Index from './pages'
+import Layout from './Layout/layout'
+import AuthLayout from './Layout/authLayout'
+import SignIn from './pages/signIn'
+import SignUp from './pages/signUp'
+import Profile from './pages/profile.jsx'
 
 function App() {
   return (
@@ -14,7 +15,12 @@ function App() {
           <Route path={RouteIndex} element={<Layout />}>
             <Route index element={<Index />} />
           </Route>
+          <Route path={RouteProfile} element={<Layout />}>
+            <Route index element={<Profile/>} />
+          </Route>
           
+          
+
           <Route path={RouteSignIn} element={<AuthLayout />}>
             <Route index element={<SignIn/>}/>
           </Route>

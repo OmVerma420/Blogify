@@ -36,15 +36,7 @@ const userSchema = mongoose.Schema({
     refreshToken : {
         type: String,
     },
-    avatarFileId: { 
-        type: mongoose.Schema.Types.ObjectId, default: null 
-    },
-    avatarFilename: { 
-        type: String, default: null 
-    },
-    avatarUrl: { 
-        type: String, default: null 
-    }
+    
 
 })
 
@@ -64,7 +56,7 @@ userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            email: this.eamil ,
+            email: this.email ,
             name: this.name
         }, 
         process.env.ACCESS_TOKEN_SECRET,

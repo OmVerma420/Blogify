@@ -12,10 +12,20 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { RouteSignUp } from "@/helpers/RouteName";
-import { Link } from "react-router-dom";
+import { RouteIndex, RouteSignUp } from "@/helpers/routeName";
+import { Link, useNavigate } from "react-router-dom";
+import { getEnv } from "@/helpers/getEnv";
+import { showToast } from "@/helpers/showToast";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user/user.slice";
+import GoogleLogin from "@/components/ui/GoogleLogin";
+
 
 function SignIn() {
+  
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(5, "Password must be at least 5 characters long"),
@@ -29,13 +39,41 @@ function SignIn() {
     },
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    try {
+        const response = await fetch(`${getEnv('VITE_API_BASE_URL')}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", 
+          body: JSON.stringify(values),
+        });
+    
+        const data = await response.json();
+    
+        if (!response.ok) {
+          showToast("error", data?.message || "Login failed");
+          return; 
+        }
+    
+        showToast("success", data?.message || "Login successful");
+        
+        dispatch(setUser(data.data.user)) // Assuming the user data is in data.data.user
+        navigate(RouteIndex);
+    
+      } catch (error) {
+        showToast("error", error?.message || "Something went wrong");
+      }
   };
 
   return (
     <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
+      <div>
+        <GoogleLogin/>
+        <div className="border my-5 flex justify-center items-center ">
+          <span className="absolute bg-white text-sm" >Or</span>
+        </div>
+      </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

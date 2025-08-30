@@ -1,17 +1,17 @@
 import express from "express";
-import { loginUser, Register } from "../controllers/user.controller.js";
-import { memoryUpload } from "../middleware.js/multer.middleware.js"
-import { uploadImage, getImage } from "../controllers/image.controller.js";
+import { GoogleLogin, loginUser, Register , Logout } from "../controllers/auth.controller.js";
+import { getUser } from "../controllers/user.controller.js";
+
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 router.post('/register', Register);
 router.post('/login', loginUser);
+router.post('/google-login', GoogleLogin);
+router.post('/logout', verifyJWT, Logout);
+router.get('/get-user', verifyJWT, getUser);
 
-// Upload route
-router.post('/file/upload', memoryUpload.single('file'), uploadImage);
 
-// Get image route - FIXED: Added leading slash and proper parameters
-router.get('/file/:bucket/:filename', getImage);
 
 export default router;
