@@ -38,7 +38,8 @@ export const Register = asyncHandler( async(req , res) => {
     const user = await User.create({
         name,
         email,
-        password
+        password,
+        avatar: avatar || "" 
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -161,8 +162,8 @@ export const GoogleLogin = asyncHandler(async (req, res) => {
         200,
         { user: await User.findById(user._id).select("-password"), accessToken, refreshToken },
         user.createdAt === user.updatedAt
-          ? "User registered with Google and logged in successfully"
-          : "User logged in with Google successfully"
+          ? "User registered and logged in successfully"
+          : "User logged in successfully"
       )
     );
 });
