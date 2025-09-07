@@ -27,7 +27,7 @@ function Profile() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
-  const [filePreview, setPreview] = useState(null);//just to show UI before saving.
+  const [filePreview, setPreview] = useState(null); //just to show UI before saving.
   const [avatar, setAvatar] = useState(null); //actual file to send to backend
 
   const { data, loading, error } = useFetch(
@@ -40,7 +40,7 @@ function Profile() {
     name: z.string().min(2, "Name must be at least 2 characters long"),
     email: z.string().email(),
     bio: z.string().min(3, "Bio must at least 3 character long").optional(),
-    password: z.string(),
+    
   });
 
   const form = useForm({
@@ -66,13 +66,15 @@ function Profile() {
   const onSubmit = async (values) => {
     try {
       const formData = new FormData();
-      formData.append("avatar", avatar);
+      if (avatar) {
+        formData.append("avatar", avatar);
+      }
       formData.append("data", JSON.stringify(values));
 
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/update-profile`,
         {
-          method: "POST",
+          method: "PUT",
           credentials: "include",
           body: formData,
         }
@@ -86,9 +88,11 @@ function Profile() {
       }
 
       showToast("success", data?.message);
-      dispatch(setUser(data.data.user)); // <-- user gets stored in redux
+      dispatch(setUser(data.data)); // <-- user gets stored in redux
+      setPreview(null); // Reset preview to show updated avatar from Redux
+      setAvatar(null); // Reset avatar state
     } catch (error) {
-      showToast("error", error?.message );
+      showToast("error", error?.message);
     }
   };
 
@@ -97,8 +101,7 @@ function Profile() {
     setAvatar(file);
     const preview = URL.createObjectURL(file);
     setPreview(preview);
-    
-  }
+  };
 
   if (loading)
     return (
@@ -118,13 +121,17 @@ function Profile() {
 
           <div className="px-6 pb-6 relative -mt-12 flex flex-col items-center overflow-hidden">
             {/* Avatar */}
-            <Dropzone onDrop={(acceptedFiles) => handleFileSelection(acceptedFiles)}>
+            <Dropzone
+              onDrop={(acceptedFiles) => handleFileSelection(acceptedFiles)}
+            >
               {({ getRootProps, getInputProps }) => (
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
 
                   <Avatar className="w-24 h-24 border-4 border-white shadow-md ">
-                    <AvatarImage src={filePreview? filePreview :user?.userData?.avatar} />
+                    <AvatarImage
+                      src={filePreview ? filePreview : user?.userData?.avatar}
+                    />
 
                     <AvatarFallback className="text-2xl bg-gray-200">
                       {user?.userData?.name?.charAt(0) || "U"}{" "}
@@ -134,7 +141,6 @@ function Profile() {
                       <FaCamera />
                     </div>
                   </Avatar>
-
                 </div>
               )}
             </Dropzone>
@@ -218,6 +224,17 @@ function Profile() {
                     </FormItem>
                   )}
                 />
+
+                <Button
+                  type="submit"
+                  className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 
+                  hover:from-blue-600 hover:to-purple-700 
+                  text-white font-semibold py-2 shadow-md 
+                  transition-all duration-300 ease-in-out"
+                >
+                  Save Changes
+                </Button>
+                
               </form>
             </Form>
           </div>

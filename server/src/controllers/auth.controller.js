@@ -21,7 +21,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
 
 export const Register = asyncHandler( async(req , res) => {
-    const {name , email , password} = req.body;
+    const {name , email , password, avatar} = req.body;
     console.log("email" , email);
     console.log("Request Body", req.body);
 

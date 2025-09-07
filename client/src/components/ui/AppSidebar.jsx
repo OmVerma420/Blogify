@@ -17,6 +17,7 @@ import { TbLogs } from "react-icons/tb";
 import { FaCommentDots } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { RouteCategoryDetails } from "@/helpers/routeName.js";
 
 
 
@@ -41,7 +42,7 @@ const AppSidebar = ()=>{
                 <SidebarMenuItem>
                   <SidebarMenuButton>
                     <BiSolidCategory />
-                    <Link to=''>Categories</Link>
+                    <Link to={RouteCategoryDetails}>Categories</Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
 

@@ -1,12 +1,15 @@
 import React from 'react'
 import { BrowserRouter, Routes ,Route } from 'react-router-dom'
-import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp } from './helpers/routeName'
+import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory } from './helpers/routeName'
 import Index from './pages'
 import Layout from './Layout/layout'
 import AuthLayout from './Layout/authLayout'
 import SignIn from './pages/signIn'
 import SignUp from './pages/signUp'
 import Profile from './pages/profile.jsx'
+import CategoryDetails from './pages/category/categoryDetails.jsx'
+import AddCategory from './pages/category/addCategory.jsx'
+import EditCategory from './pages/category/editCategory.jsx'
 
 function App() {
   return (
@@ -14,9 +17,10 @@ function App() {
         <Routes>
           <Route path={RouteIndex} element={<Layout />}>
             <Route index element={<Index />} />
-          </Route>
-          <Route path={RouteProfile} element={<Layout />}>
-            <Route index element={<Profile/>} />
+            <Route path={RouteProfile} element={<Profile />}/>
+            <Route path={RouteCategoryDetails} element={<CategoryDetails />}/>
+            <Route path={RouteAddCategory} element={<AddCategory />}/>
+            <Route path={RouteEditCategory} element={<EditCategory />}/>
           </Route>
           
           
