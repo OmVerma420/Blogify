@@ -20,12 +20,41 @@ export const addCategory = asyncHandler( async (req , res) => {
 export const showCategory = asyncHandler( async (req , res) => {
 
 })
-export const editCategory = asyncHandler( async (req , res) => {
+export const editCategory = asyncHandler(async (req, res) => {
+  const { category_id, name, slug } = req.body;
 
-})
+  if (!category_id) {
+    throw new ApiError(400, "Category ID is required");
+  }
+
+  const updatedCategory = await Category.findByIdAndUpdate(
+    category_id,
+    { name, slug },
+    { new: true }
+  );
+
+  if (!updatedCategory) {
+    throw new ApiError(404, "Category not found");
+  }
+
+  // Use ApiResponse for consistent JSON structure
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedCategory, "Category updated successfully"));
+});
+
 export const deleteCategory = asyncHandler( async (req , res) => {
+    const {category_id} = req.body;
+    if (!category_id) throw new ApiError(400, "Category ID is required");
 
-})
+    const deletedCategory = await Category.findByIdAndDelete(category_id);
+    if (!deletedCategory) throw new ApiError(404, "Category not found");
+
+
+     return res
+    .status(200)
+    .json(new ApiResponse(200, "Category deleted successfully"));
+});
 
 export const getAllCategory = asyncHandler( async (req , res) => {
     const category = await Category.find().sort({name: 1}).lean().exec()

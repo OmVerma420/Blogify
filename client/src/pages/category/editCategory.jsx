@@ -16,8 +16,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import slugify from "slugify";
 import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
+import { useLocation, useNavigate } from "react-router-dom";
+import { RouteCategoryDetails } from "@/helpers/routeName";
 
 function EditCategory() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const categoryId = location.state?.categoryId;
+
   const formSchema = z.object({
     name: z.string().min(2, "Name should be atleast two character long"),
     slug: z.string().min(3, "Slug should be atleast three character long"),
@@ -41,15 +48,17 @@ function EditCategory() {
   }
   },[categoryName , form]);
 
+  
+
   const onSubmit = async (values) => {
         try {
           const response = await fetch(
-            `${getEnv("VITE_API_BASE_URL")}/auth/category/add`,
+            `${getEnv("VITE_API_BASE_URL")}/auth/category/edit`,
             {
-              method: "POST",
+              method: "PUT",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
-              body: JSON.stringify(values),
+              body: JSON.stringify({...values,category_id:categoryId}),
             }
           );
           const data = await response.json();
@@ -59,7 +68,7 @@ function EditCategory() {
           }
           form.reset()
           showToast("success", data?.message);
-          
+          navigate(RouteCategoryDetails)
         } catch (error) {
           showToast("error", error?.message);
         }
@@ -126,7 +135,7 @@ function EditCategory() {
                 type="submit"
                 className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white py-3 text-lg font-medium"
               >
-                Submit
+                Update
               </Button>
             </form>
           </Form>

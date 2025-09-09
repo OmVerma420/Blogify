@@ -1,19 +1,19 @@
-
 import multer from "multer";
+import path from "path";
 
-// When a frontend form sends images, it uses multipart/form-data — not JSON.
-//Multer is a Node.js middleware for handling multipart/form-data, primarily used for file uploads.
-//Express can't read file uploads on its own. You need a helper — and that’s where Multer comes in.
+const storage = multer.memoryStorage();
 
-//disk storage configuration
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null,"./public/temp" )
-    },
-    filename: function (req, file, cb) {
-      
-      cb(null, file.originalname)
-    }
-  })
-  
-export const upload = multer({ storage, })
+const fileFilter = (req, file, cb) => {
+  const allowed = [".jpg", ".jpeg", ".png", ".webp"];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!allowed.includes(ext)) {
+    return cb(new Error("Only image files are allowed!"), false);
+  }
+  cb(null, true);
+};
+
+export const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter,
+});

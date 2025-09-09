@@ -5,3 +5,6 @@ export const RouteProfile = "/profile";
 export const RouteCategoryDetails = '/categories'
 export const RouteAddCategory = '/category/add'
 export const RouteEditCategory = "/category/edit";
+export const RouteBlog ='/blog'
+export const RouteAddBlog ='/blog/add'
+export const RouteEditBlog ='/blog/edit'
