@@ -1,14 +1,26 @@
-export const deleteData = async (endPoint, categoryId) => {
+export const deleteData = async (endPoint, id) => {
 
   const c = confirm("Are you sure to delete this data?");
 
   if (c) {
     try {
-      const response = await fetch(endPoint, {
+      let url = endPoint;
+      let body = null;
+      if (endPoint.includes('blog')) {
+        url = `${endPoint}/${id}`;
+      } else if (endPoint.includes('category')) {
+        url = `${endPoint}/${id}`;
+      } else {
+        // fallback to old way
+        const key = endPoint.includes('blog') ? 'blog_id' : 'category_id';
+        body = JSON.stringify({ [key]: id });
+      }
+
+      const response = await fetch(url, {
         method: "delete",
-        headers: { "Content-Type": "application/json" },
+        headers: body ? { "Content-Type": "application/json" } : {},
         credentials: "include",
-        body: JSON.stringify({ category_id: categoryId }),
+        body: body,
       });
 
       const data = await response.json();

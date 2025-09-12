@@ -1,6 +1,7 @@
 import { Category } from "../models/category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const addCategory = asyncHandler( async (req , res) => {
     const {name , slug} = req.body
@@ -18,17 +19,29 @@ export const addCategory = asyncHandler( async (req , res) => {
 })
 
 export const showCategory = asyncHandler( async (req , res) => {
+    const { categoryId } = req.params;
+    if (!categoryId) {
+        throw new ApiError(400, "Category ID is required");
+    }
 
+    const category = await Category.findById(categoryId);
+    if (!category) {
+        throw new ApiError(404, "Category not found");
+    }
+
+    res.status(200).json(new ApiResponse(200, category, "Category fetched successfully"));
 })
-export const editCategory = asyncHandler(async (req, res) => {
-  const { category_id, name, slug } = req.body;
 
-  if (!category_id) {
+export const editCategory = asyncHandler(async (req, res) => {
+  const { categoryId } = req.params;
+  const { name, slug } = req.body;
+
+  if (!categoryId) {
     throw new ApiError(400, "Category ID is required");
   }
 
   const updatedCategory = await Category.findByIdAndUpdate(
-    category_id,
+    categoryId,
     { name, slug },
     { new: true }
   );
@@ -44,10 +57,10 @@ export const editCategory = asyncHandler(async (req, res) => {
 });
 
 export const deleteCategory = asyncHandler( async (req , res) => {
-    const {category_id} = req.body;
-    if (!category_id) throw new ApiError(400, "Category ID is required");
+    const {categoryId} = req.params;
+    if (!categoryId) throw new ApiError(400, "Category ID is required");
 
-    const deletedCategory = await Category.findByIdAndDelete(category_id);
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
     if (!deletedCategory) throw new ApiError(404, "Category not found");
 
 

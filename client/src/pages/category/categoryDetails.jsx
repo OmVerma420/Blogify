@@ -23,12 +23,7 @@ import { deleteData } from "@/helpers/handledelete";
 function CategoryDetails() {
   
   const [refreshData, setRefreshData] = useState(false);
-  const {
-    data: categoryData,
-    loading,
-    error,
-  } = useFetch(
-    `${getEnv("VITE_API_BASE_URL")}/auth/all-category`,
+  const {data: categoryData,loading,error,} = useFetch(`${getEnv("VITE_API_BASE_URL")}/auth/category/all`,
     {
       method: "get",
       credentials: "include",

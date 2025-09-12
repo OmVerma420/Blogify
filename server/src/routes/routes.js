@@ -16,14 +16,14 @@ router.post('/logout', verifyJWT, Logout);
 router.get('/get-user', verifyJWT, getUser);
 router.put('/update-profile', verifyJWT,upload.single('avatar'), updateUserProfile);
 router.post('/category/add', verifyJWT, addCategory);
-router.put('/category/edit', verifyJWT, editCategory);
-router.put('/category/show', verifyJWT, showCategory);
-router.delete('/category/delete', verifyJWT, deleteCategory);
-router.get('/all-category', verifyJWT, getAllCategory);
+router.put('/category/edit/:categoryId', verifyJWT, editCategory);
+router.get('/category/show/:categoryId', verifyJWT, showCategory);
+router.delete('/category/delete/:categoryId', verifyJWT, deleteCategory);
+router.get('/category/all', verifyJWT, getAllCategory);
 router.post('/blog/add',verifyJWT,upload.single('file'), addBlog);
-router.get('/blog/edit',verifyJWT, editBlog);
-router.put('/blog/update',verifyJWT,upload.single('file'), updateBlog);
-router.delete('/blog/delete',verifyJWT, deleteBlog);
+router.get('/blog/edit/:blogId',verifyJWT, editBlog);
+router.put('/blog/update/:blogId',verifyJWT,upload.single('file'), updateBlog);
+router.delete('/blog/delete/:blogId',verifyJWT, deleteBlog);
 router.get('/blog/all-blog',verifyJWT, showAllBlog);
 
 

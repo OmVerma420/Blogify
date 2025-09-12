@@ -14,7 +14,7 @@ export const useFetch = (url, options = {}, dependencies = []) => {
         if (!response.ok) {
           throw new Error(responseData.message || "Something went wrong");
         }
-        console.log("Fetched data:", responseData);
+        // console.log("Fetched data:", responseData);
         setData(responseData);
         setError();
       } catch (error) {

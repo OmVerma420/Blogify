@@ -42,7 +42,7 @@ function AddBlog() {
     data: categoryData,
     loading,
     error,
-  } = useFetch(`${getEnv("VITE_API_BASE_URL")}/auth/all-category`, {
+  } = useFetch(`${getEnv("VITE_API_BASE_URL")}/auth/category/all`, {
     method: "get",
     credentials: "include",
   });
@@ -131,7 +131,7 @@ function AddBlog() {
       <Card className="w-full max-w-3xl shadow-xl rounded-2xl">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold text-center text-gray-800">
-            Add Category
+            Add Blog
           </CardTitle>
         </CardHeader>
 

@@ -18,14 +18,24 @@ import { FaCommentDots } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { RouteBlog, RouteCategoryDetails } from "@/helpers/routeName.js";
-
-
+import { useFetch } from "@/hooks/useFetch";
+import { getEnv } from "@/helpers/getEnv";
+import { TableRow } from "./table";
 
 
 const AppSidebar = ()=>{
+
+  const {data: categoryData} = useFetch(`${getEnv("VITE_API_BASE_URL")}/auth/category/all`,
+      {
+        method: "get",
+        credentials: "include",
+      },
+      
+    );
+
   return (
     <Sidebar>
-      <SidebarHeader className="bg-gray-100"> 
+      <SidebarHeader className="bg-gray-100">
         <img src={Logo} alt="Logo" width={40} height={40} />
       </SidebarHeader>
         <SidebarContent className="bg-gray-100">
@@ -75,15 +85,19 @@ const AppSidebar = ()=>{
               Categories
             </SidebarGroupLabel>
              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    <GoDotFill />
-                    <Link to=''>Category Items</Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                {categoryData?.data?.length > 0 && categoryData.data.map((category) =>(
+                     <SidebarMenuItem key={category._id}>
+                      <SidebarMenuButton>
+                         <GoDotFill className="mr-2" />
+                         <Link >{category.name}</Link>
+                      </SidebarMenuButton>
+                      </SidebarMenuItem>
+
+                   ))
+
+                }
              </SidebarMenu>
           </SidebarGroup >
-
         </SidebarContent>
       
     </Sidebar>

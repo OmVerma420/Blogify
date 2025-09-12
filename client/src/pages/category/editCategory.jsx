@@ -16,8 +16,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import slugify from "slugify";
 import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
+import { useFetch } from "@/hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RouteCategoryDetails } from "@/helpers/routeName";
+import { Loading } from "@/components/ui/loading";
+import { toast } from "react-toastify";
 
 function EditCategory() {
 
@@ -38,6 +41,27 @@ function EditCategory() {
     },
   });
 
+  const { data: categoryData, loading: categoryLoading, error: categoryError } = useFetch(
+    categoryId ? `${getEnv("VITE_API_BASE_URL")}/auth/category/show/${categoryId}` : null,
+    { method: "get", credentials: "include" },
+    [categoryId]
+  );
+
+  useEffect(() => {
+    if (categoryData?.data) {
+      form.reset({
+        name: categoryData.data.name || '',
+        slug: categoryData.data.slug || '',
+      });
+    }
+  }, [categoryData, form]);
+
+  useEffect(() => {
+    if (categoryError) {
+      toast(categoryError.message);
+    }
+  }, [categoryError]);
+
   const categoryName = form.watch("name");
   useEffect(() => {
     if (categoryName && categoryName.trim().length >0) {
@@ -53,12 +77,12 @@ function EditCategory() {
   const onSubmit = async (values) => {
         try {
           const response = await fetch(
-            `${getEnv("VITE_API_BASE_URL")}/auth/category/edit`,
+            `${getEnv("VITE_API_BASE_URL")}/auth/category/edit/${categoryId}`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
-              body: JSON.stringify({...values,category_id:categoryId}),
+              body: JSON.stringify(values),
             }
           );
           const data = await response.json();
@@ -73,6 +97,18 @@ function EditCategory() {
           showToast("error", error?.message);
         }
   };
+
+  if (categoryLoading) return (
+    <div>
+      <Loading />
+    </div>
+  );
+
+  if (categoryError) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <p className="text-red-500">Error loading category: {categoryError.message}</p>
+    </div>
+  );
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-gray-50 p-6">
