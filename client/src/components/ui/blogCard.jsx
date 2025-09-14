@@ -44,7 +44,7 @@ function BlogCard({ props }) {
         </div>
 
         <h2 className="text-2xl font-bold line-clamp-2 mb-2 hover:text-blue-600 transition-colors">
-          <Link to={`/blog/${props.slug}`}>{props.title}</Link>
+          {props.title}
         </h2>
 
       </CardContent>

@@ -107,3 +107,16 @@ export const showAllBlog = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200,blog, "All blogs fetched successfully"));
 });
+
+
+export const getBlog = asyncHandler(async(req, res)=>{
+  const {slug} = req.params 
+  console.log(slug)
+  const blog = await Blog.findOne({slug}).populate('author','name avatar role').populate('category','name slug').lean().exec()
+  console.log(blog)
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200,blog, "All blogs fetched successfully"));
+
+})
