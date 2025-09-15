@@ -37,7 +37,7 @@ function Comment({ blogId }) {
 
   const onSubmit = async (values) => {
     try {
-      const newValues = { ...values, blogId, author: user.userData._id };
+      const newValues = { ...values, blogId, user: user.userData._id };
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/comment/add`,
         {

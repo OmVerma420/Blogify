@@ -57,11 +57,11 @@ function CommentList({ blogId, newComment }) {
               className="flex gap-3 p-4 border rounded-xl shadow-sm hover:shadow-md transition bg-white"
             >
               <Avatar className="w-12 h-12 rounded-full overflow-hidden">
-                <AvatarImage src={comment?.author.avatar || usericon} />
+                <AvatarImage src={comment?.user.avatar || usericon} />
               </Avatar>
               <div className="flex-1">
                 <p className="font-semibold text-gray-800">
-                  {comment?.author.name}
+                  {comment?.user.name}
                 </p>
                 <p className="text-xs text-gray-500 mb-1">
                   {moment(comment?.createdAt).format("DD MMM YYYY")}

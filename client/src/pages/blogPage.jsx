@@ -8,6 +8,9 @@ import { decode } from 'entities';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import moment from "moment";
+import { AiOutlineLike } from "react-icons/ai";
+import LikeCount from '@/components/ui/likeCount';
+
 
 
 function BlogPage() {
@@ -47,6 +50,9 @@ function BlogPage() {
                   {moment(data?.data.createdAt).format('DD-MM-YYYY')}
                 </p>
               </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <LikeCount blogId={data.data._id} />
             </div>
             <span className="text-sm px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full">
               {data?.data.category.name}
