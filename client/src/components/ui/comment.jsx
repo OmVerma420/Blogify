@@ -21,7 +21,8 @@ import { Link } from "react-router-dom";
 import CommentList from "./commentList";
 
 function Comment({ blogId }) {
-  const [newComment, setNewComment] = useState();
+  const [newComments, setNewComments] = useState([]);
+
   const user = useSelector((state) => state.user);
 
   const formSchema = z.object({
@@ -52,7 +53,7 @@ function Comment({ blogId }) {
         showToast("error", data?.message);
         return;
       }
-      setNewComment(data.data);
+      setNewComments((prev) => [data.data, ...prev]);
       form.reset();
       showToast("success", data?.message);
     } catch (error) {
@@ -109,7 +110,7 @@ function Comment({ blogId }) {
       )}
 
       {/* Comment List */}
-      <CommentList blogId={blogId} newComment={newComment} />
+      <CommentList blogId={blogId} newComments={newComments} />
     </div>
   );
 }

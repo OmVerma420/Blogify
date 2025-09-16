@@ -6,7 +6,7 @@ import usericon from "@/assets/user.png";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-function CommentList({ blogId, newComment }) {
+function CommentList({ blogId, newComments }) {
   const user = useSelector((state) => state.user);
   const { data, loading, error } = useFetch(
     `${getEnv("VITE_API_BASE_URL")}/auth/comment/get/${blogId}`,
@@ -23,16 +23,12 @@ function CommentList({ blogId, newComment }) {
     <div className="mt-8">
       {/* Heading */}
       <h4 className="text-xl font-semibold mb-6 border-b pb-2">
-        {newComment ? (
-          <span>{data?.data.length + 1} Comments</span>
-        ) : (
-          <span>{data?.data.length} Comments</span>
-        )}
+        <span>{data?.data.length + newComments.length} Comments</span>
       </h4>
 
-      {/* New Comment (optimistic render) */}
-      {newComment && (
-        <div className="flex gap-3 mb-4 p-4 border rounded-xl bg-indigo-50 shadow-sm">
+      {/* New Comments (optimistic render) */}
+      {newComments.map((newComment) => (
+        <div key={newComment._id} className="flex gap-3 mb-4 p-4 border rounded-xl bg-indigo-50 shadow-sm">
           <Avatar className="w-12 h-12 rounded-full overflow-hidden">
             <AvatarImage src={user.userData?.avatar || usericon} />
           </Avatar>
@@ -46,7 +42,7 @@ function CommentList({ blogId, newComment }) {
             </p>
           </div>
         </div>
-      )}
+      ))}
 
       {/* Old Comments */}
       <div className="space-y-4">

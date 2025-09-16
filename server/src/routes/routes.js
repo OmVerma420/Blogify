@@ -7,7 +7,7 @@ import {upload} from "../middleware/multer.middleware.js";
 import { addCategory, deleteCategory, editCategory, getAllCategory, showCategory } from "../controllers/category.controller.js";
 import { addBlog, deleteBlog, editBlog, getBlog, showAllBlog, updateBlog } from "../controllers/blog.controller.js";
 import { addcomment, getComment } from "../controllers/comment.controller.js";
-import { doLike, getLikeCount } from "../controllers/like.controller.js";
+import { doLike, getLikeCount } from "../controllers/like.controller.js";  // ✅ add getLikeCount here
 
 const router = express.Router();
 
@@ -35,8 +35,13 @@ router.get('/blog/get-blog/:slug', getBlog);
 router.post('/comment/add', addcomment);
 router.get('/comment/get/:blogId', getComment);
 
-router.post('/like/do-like', doLike);
-router.get('/like/get-like-count/:blogId', getLikeCount);
+// Like toggle (like/unlike)
+router.post("/like/do-like", doLike);
+
+// Get like count + user status
+router.get("/like/get-like-count/:blogId", verifyJWT, getLikeCount);
+
+
 
 
 

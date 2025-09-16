@@ -25,10 +25,24 @@ export const doLike = asyncHandler(async(req, res)=>{
 
 
 export const getLikeCount = asyncHandler(async(req, res)=>{
-    const {blogId} = req.params
+    const { blogId } = req.params;
+    const userId = req.user?._id; // 👈 from JWT
+
+    if (!blogId) {
+       throw new ApiError(400, "Blog ID is required");
+    }
+
     const likeCount = await Like.countDocuments({blogId})
+
+    let hasUserLiked = false;
+    if(userId){
+        const getUserLiked = await Like.countDocuments({blogId,user:userId})
+        if(getUserLiked > 0){
+            hasUserLiked = true;
+        }
+    }
 
     return res
     .status(200)
-    .json(new ApiResponse(200, likeCount, "All Likes are fetched successfully"));
+    .json(new ApiResponse(200, {likeCount, hasUserLiked}, "Likes fetched successfully"));
 })
