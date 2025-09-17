@@ -5,7 +5,7 @@ import { getUser, updateUserProfile } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import {upload} from "../middleware/multer.middleware.js";
 import { addCategory, deleteCategory, editCategory, getAllCategory, showCategory } from "../controllers/category.controller.js";
-import { addBlog, deleteBlog, editBlog, getBlog, showAllBlog, updateBlog } from "../controllers/blog.controller.js";
+import { addBlog, deleteBlog, editBlog, getBlog, getRelatedBlog, showAllBlog, updateBlog } from "../controllers/blog.controller.js";
 import { addcomment, getComment } from "../controllers/comment.controller.js";
 import { doLike, getLikeCount } from "../controllers/like.controller.js";  // ✅ add getLikeCount here
 
@@ -31,6 +31,8 @@ router.put('/blog/update/:blogId',verifyJWT,upload.single('file'), updateBlog);
 router.delete('/blog/delete/:blogId',verifyJWT, deleteBlog);
 router.get('/blog/all-blog', showAllBlog);
 router.get('/blog/get-blog/:slug', getBlog);
+router.get('/blog/get-related-blog/:categorySlug', getRelatedBlog);
+
 
 router.post('/comment/add', addcomment);
 router.get('/comment/get/:blogId', getComment);

@@ -4,11 +4,19 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import {encode} from 'entities'
+import { Category } from "../models/category.model.js";
+
 
 export const addBlog = asyncHandler(async (req, res) => {
   const data = JSON.parse(req.body.data);
   if (!data) {
     throw new ApiError(404, "Blog Data not found");
+  }
+
+  // Validate category exists
+  const categoryExists = await Category.findById(data.category);
+  if (!categoryExists) {
+    throw new ApiError(404, "Category not found");
   }
 
   let featuredImage = ''
@@ -111,12 +119,27 @@ export const showAllBlog = asyncHandler(async (req, res) => {
 
 export const getBlog = asyncHandler(async(req, res)=>{
   const {slug} = req.params 
-  console.log(slug)
   const blog = await Blog.findOne({slug}).populate('author','name avatar role').populate('category','name slug').lean().exec()
-  console.log(blog)
 
   return res
     .status(200)
     .json(new ApiResponse(200,blog, "All blogs fetched successfully"));
+
+})
+
+export const getRelatedBlog = asyncHandler(async(req, res)=>{
+  const {categorySlug} = req.params
+  const categoryData = await Category.findOne({slug :categorySlug})
+  if(!categoryData){
+    return res
+      .status(200)
+      .json(new ApiResponse(200,[], "No related blogs found"));
+  }
+  const categoryId = categoryData._id
+  const relatedBlog = await Blog.find({category: categoryId}).lean().exec()
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200,relatedBlog, "All Related blogs are fetched successfully"));
 
 })

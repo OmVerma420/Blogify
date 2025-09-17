@@ -15,7 +15,6 @@ export const getUser = asyncHandler(async (req, res) => {
 });
 
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  console.log("Received file in updateUserProfile:", req.file);
   const data = JSON.parse(req.body.data);
   const user = await User.findById(req.user._id);
 

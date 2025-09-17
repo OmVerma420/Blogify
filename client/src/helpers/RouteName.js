@@ -9,9 +9,8 @@ export const RouteBlog ='/blog'
 export const RouteAddBlog ='/blog/add'
 export const RouteEditBlog ='/blog/edit'
 export const RouteBlogDetails = (category, blog) => {
-    if(!category || !blog) {
-        return '/blog/:category/:blog'
-    } else {
-        return `/blog/${category}/${blog}`
-    }
-}
+  return category && blog
+    ? `/blog/${category}/${blog}`
+    : "/blog/:category/:blog";
+};
+

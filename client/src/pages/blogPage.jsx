@@ -10,11 +10,15 @@ import { useParams } from 'react-router-dom';
 import moment from "moment";
 import { AiOutlineLike } from "react-icons/ai";
 import LikeCount from '@/components/ui/likeCount';
+import RelatedBlog from '@/components/ui/relatedBlog';
 
 
 
 function BlogPage() {
   const { category, blog } = useParams();
+  
+  console.log("BlogPage params:", category, blog);
+
   const { data, loading, error } = useFetch(
     `${getEnv("VITE_API_BASE_URL")}/auth/blog/get-blog/${blog}`,
     {
@@ -87,10 +91,11 @@ function BlogPage() {
       {/* Right - Sidebar */}
       <div className="lg:w-[30%] space-y-5">
         <div className="bg-white border rounded-xl shadow-sm p-5">
-          
+          {data && <RelatedBlog categorySlug={data.data.category.slug} />}
+
         </div>
 
-        
+
       </div>
     </div>
   );

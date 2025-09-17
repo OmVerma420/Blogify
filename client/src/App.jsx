@@ -27,7 +27,9 @@ function App() {
             <Route path={RouteCategoryDetails} element={<CategoryDetails />}/>
             <Route path={RouteAddCategory} element={<AddCategory />}/>
             <Route path={RouteEditCategory} element={<EditCategory />}/>
-            <Route path={RouteBlogDetails(':category', ':blog')} element={<BlogPage/>}/>
+            <Route path="/blog/:category/:blog" element={<BlogPage />} />
+
+
 
             {/* blog */}
             <Route path={RouteBlog} element={<BlogDetails/>}/>

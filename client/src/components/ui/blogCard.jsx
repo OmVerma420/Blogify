@@ -11,9 +11,8 @@ import { RouteBlogDetails } from "@/helpers/routeName";
 function BlogCard({ props }) {
   const user = useSelector((state) => state.user);
 
-  return (
-    <Link to={RouteBlogDetails(props.category.slug,props.slug)}>
-       <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+  const content = (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -49,7 +48,14 @@ function BlogCard({ props }) {
 
       </CardContent>
     </Card>
+  );
+
+  return props.category && props.category.slug ? (
+    <Link to={RouteBlogDetails(props.category.slug, props.slug)}>
+      {content}
     </Link>
+  ) : (
+    content
   );
 }
 
