@@ -17,7 +17,7 @@ import { TbLogs } from "react-icons/tb";
 import { FaCommentDots } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
-import { RouteBlog, RouteCategoryDetails } from "@/helpers/routeName.js";
+import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails } from "@/helpers/routeName.js";
 import { useFetch } from "@/hooks/useFetch";
 import { getEnv } from "@/helpers/getEnv";
 import { TableRow } from "./table";
@@ -89,7 +89,7 @@ const AppSidebar = ()=>{
                      <SidebarMenuItem key={category._id}>
                       <SidebarMenuButton>
                          <GoDotFill className="mr-2" />
-                         <Link >{category.name}</Link>
+                         <Link to={RouteBlogByCategory(category.slug)}>{category.name}</Link>
                       </SidebarMenuButton>
                       </SidebarMenuItem>
 

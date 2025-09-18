@@ -17,15 +17,18 @@ import RelatedBlog from '@/components/ui/relatedBlog';
 function BlogPage() {
   const { category, blog } = useParams();
   
-  console.log("BlogPage params:", category, blog);
+  // console.log("BlogPage params:", category, blog);
 
   const { data, loading, error } = useFetch(
     `${getEnv("VITE_API_BASE_URL")}/auth/blog/get-blog/${blog}`,
     {
       method: "get",
       credentials: "include",
-    }
+    },
+    [blog,category]
   );
+  console.log(data)
+  // console.log(blog)
 
   if (loading) return <Loading />;
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
@@ -56,7 +59,7 @@ function BlogPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <LikeCount blogId={data.data._id} />
+              <LikeCount blogId={data?.data._id} />
             </div>
             <span className="text-sm px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full">
               {data?.data.category.name}
@@ -66,7 +69,7 @@ function BlogPage() {
           {/* Featured Image */}
           <div className="mb-6">
             <img
-              src={data.data.featuredImage}
+              src={data?.data.featuredImage}
               alt={data?.data.title}
               className="w-full max-h-[450px] object-cover rounded-xl shadow-md"
             />
@@ -76,13 +79,13 @@ function BlogPage() {
           <div
             className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
             dangerouslySetInnerHTML={{
-              __html: decode(data.data.blogContent) || "",
+              __html: decode(data?.data.blogContent) || "",
             }}
           />
 
           {/* Comment Section */}
           <div className="border-t mt-10 pt-6">
-            <Comment blogId={data.data._id} />
+            <Comment blogId={data?.data._id} />
           </div>
           
         </div>
@@ -91,7 +94,7 @@ function BlogPage() {
       {/* Right - Sidebar */}
       <div className="lg:w-[30%] space-y-5">
         <div className="bg-white border rounded-xl shadow-sm p-5">
-          {data && <RelatedBlog categorySlug={data.data.category.slug} />}
+          {data && <RelatedBlog categorySlug={category} currentBlog={blog} />}
 
         </div>
 

@@ -13,4 +13,13 @@ export const RouteBlogDetails = (category, blog) => {
     ? `/blog/${category}/${blog}`
     : "/blog/:category/:blog";
 };
+export const RouteBlogByCategory = (category) => {
+  if(!category){
+    return "/blog/get-category-related-blog/:category";
+
+  }else{
+    return `/blog/get-category-related-blog/${category}`
+
+  }
+};
 

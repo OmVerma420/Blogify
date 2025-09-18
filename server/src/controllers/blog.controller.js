@@ -128,7 +128,7 @@ export const getBlog = asyncHandler(async(req, res)=>{
 })
 
 export const getRelatedBlog = asyncHandler(async(req, res)=>{
-  const {categorySlug} = req.params
+  const {categorySlug , currentBlog} = req.params
   const categoryData = await Category.findOne({slug :categorySlug})
   if(!categoryData){
     return res
@@ -136,10 +136,27 @@ export const getRelatedBlog = asyncHandler(async(req, res)=>{
       .json(new ApiResponse(200,[], "No related blogs found"));
   }
   const categoryId = categoryData._id
-  const relatedBlog = await Blog.find({category: categoryId}).lean().exec()
+  const relatedBlog = await Blog.find({category: categoryId , slug:{$ne:currentBlog}}).lean().exec()
 
   return res
     .status(200)
     .json(new ApiResponse(200,relatedBlog, "All Related blogs are fetched successfully"));
+
+})
+
+export const getBlogByCategory = asyncHandler(async(req, res)=>{
+  const {category} = req.params
+  const categoryData = await Category.findOne({slug :category})
+  if(!categoryData){
+    return res
+      .status(200)
+      .json(new ApiResponse(200,[], "No related blogs found"));
+  }
+  const categoryId = categoryData._id
+  const blog = await Blog.find({category: categoryId }).populate('author','name avatar role').populate('category','name slug').lean().exec()
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200,blog, "All Related blogs of same category are fetched successfully"));
 
 })

@@ -18,7 +18,8 @@ function BlogCard({ props }) {
           <div className="flex items-center space-x-2">
             <Avatar className="w-10 h-10">
               <AvatarImage src={props.featuredImage || ""} />
-              <AvatarFallback>{props.author.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{props.author?.name?.[0]}</AvatarFallback>
+
             </Avatar>
             <span className="text-base font-semibold">{props.author.name}</span>
           </div>
