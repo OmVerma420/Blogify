@@ -25,7 +25,7 @@ import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
 import { useFetch } from "@/hooks/useFetch";
 import Dropzone from "react-dropzone";
-import Editor from "@/components/ui/Editor";
+import Editor from "@/components/ui/editor";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
 import { useNavigate } from "react-router-dom";
