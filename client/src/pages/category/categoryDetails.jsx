@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { RouteAddCategory, RouteEditCategory } from "@/helpers/routeName.js";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   Table,
@@ -19,16 +19,20 @@ import { FaRegEdit } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { showToast } from "@/helpers/showToast";
 import { deleteData } from "@/helpers/handledelete";
+import { useDispatch, useSelector } from "react-redux";
+import { triggerRefresh } from "@/redux/category/category.slice";
 
 function CategoryDetails() {
-  
-  const [refreshData, setRefreshData] = useState(false);
+
+  const refresh = useSelector((state) => state.category.refresh);
+  const dispatch = useDispatch();
+
   const {data: categoryData,loading,error,} = useFetch(`${getEnv("VITE_API_BASE_URL")}/auth/category/all`,
     {
       method: "get",
       credentials: "include",
     },
-    [refreshData]
+    [refresh]
   );
   const handleDelete = async (categoryId) => {
     const isDelete = await deleteData(
@@ -37,7 +41,7 @@ function CategoryDetails() {
     );
 
     if (isDelete) {
-      setRefreshData(!refreshData);
+      dispatch(triggerRefresh());
       showToast("success", "Date deleted");
     } else {
       showToast("error", "Date not deleted");

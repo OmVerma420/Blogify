@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { email, z } from "zod";
 import { getEnv } from "@/helpers/getEnv";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { showToast } from "@/helpers/showToast";
@@ -22,15 +21,16 @@ import { setUser } from "../redux/user/user.slice.js";
 import { Loading } from "@/components/ui/loading.jsx";
 import { FaCamera } from "react-icons/fa";
 import Dropzone from "react-dropzone";
+import { z } from "zod";
 
 function Profile() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
-  const [filePreview, setPreview] = useState(null); //just to show UI before saving.
-  const [avatar, setAvatar] = useState(null); //actual file to send to backend
+  const [filePreview, setPreview] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
-  const { data, loading, error } = useFetch(
+  const { data, loading } = useFetch(
     `${getEnv("VITE_API_BASE_URL")}/auth/get-user`,
     { method: "get", credentials: "include" }
   );
@@ -40,7 +40,7 @@ function Profile() {
     name: z.string().min(2, "Name must be at least 2 characters long"),
     email: z.string().email(),
     bio: z.string().min(3, "Bio must at least 3 character long").optional(),
-    
+    password: z.string().optional(),
   });
 
   const form = useForm({
@@ -66,9 +66,7 @@ function Profile() {
   const onSubmit = async (values) => {
     try {
       const formData = new FormData();
-      if (avatar) {
-        formData.append("avatar", avatar);
-      }
+      if (avatar) formData.append("avatar", avatar);
       formData.append("data", JSON.stringify(values));
 
       const response = await fetch(
@@ -81,16 +79,12 @@ function Profile() {
       );
 
       const data = await response.json();
-
-      if (!response.ok) {
-        showToast("error", data?.message);
-        return;
-      }
+      if (!response.ok) return showToast("error", data?.message);
 
       showToast("success", data?.message);
-      dispatch(setUser(data.data)); // <-- user gets stored in redux
-      setPreview(null); // Reset preview to show updated avatar from Redux
-      setAvatar(null); // Reset avatar state
+      dispatch(setUser(data.data));
+      setPreview(null);
+      setAvatar(null);
     } catch (error) {
       showToast("error", error?.message);
     }
@@ -105,139 +99,143 @@ function Profile() {
 
   if (loading)
     return (
-      <div>
-        <Loading />{" "}
+      <div className="flex justify-center items-center h-64">
+        <Loading />
       </div>
     );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-md mx-auto">
-        {/* Card */}
+    <div className="container mx-auto px-4 py-10">
+      <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        {/* Top Banner */}
+        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-28"></div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Gradient header like profile UI */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-24"></div>
+        {/* Avatar Section */}
+        <div className="relative -mt-14 flex flex-col items-center px-6 pb-6">
+          <Dropzone onDrop={handleFileSelection}>
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()} className="relative group">
+                <input {...getInputProps()} />
+                <Avatar className="w-28 h-28 border-4 border-white shadow-lg">
+                  <AvatarImage
+                    src={filePreview ? filePreview : user?.userData?.avatar}
+                  />
+                  <AvatarFallback className="text-3xl bg-gray-200">
+                    {user?.userData?.name?.charAt(0) || "U"}
+                  </AvatarFallback>
+                </Avatar>
 
-          <div className="px-6 pb-6 relative -mt-12 flex flex-col items-center overflow-hidden">
-            {/* Avatar */}
-            <Dropzone
-              onDrop={(acceptedFiles) => handleFileSelection(acceptedFiles)}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-
-                  <Avatar className="w-24 h-24 border-4 border-white shadow-md ">
-                    <AvatarImage
-                      src={filePreview ? filePreview : user?.userData?.avatar}
-                    />
-
-                    <AvatarFallback className="text-2xl bg-gray-200">
-                      {user?.userData?.name?.charAt(0) || "U"}{" "}
-                    </AvatarFallback>
-
-                    <div className="absolute bottom-0 right-0 flex items-center justify-center w-9 h-9 bg-white rounded-full shadow-md opacity-80 hover:opacity-100 transition duration-300 cursor-pointer">
-                      <FaCamera />
-                    </div>
-                  </Avatar>
+                <div className="absolute bottom-1 right-1 flex items-center justify-center w-9 h-9 bg-white rounded-full shadow-md opacity-90 group-hover:opacity-100 transition cursor-pointer">
+                  <FaCamera className="text-gray-600" />
                 </div>
-              )}
-            </Dropzone>
+              </div>
+            )}
+          </Dropzone>
 
-            {/* Heading */}
-            <h2 className="mt-4 text-xl font-bold text-gray-900">
-              Welcome Back
-            </h2>
+          {/* Heading */}
+          <h2 className="mt-4 text-2xl font-bold text-gray-900">
+            {user?.userData?.name || "Your Name"}
+          </h2>
+          <p className="text-sm text-gray-500">{user?.userData?.email}</p>
+        </div>
 
-            {/* Form */}
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5 w-full"
+        {/* Form */}
+        <div className="px-6 pb-8">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6 w-full"
+            >
+              {/* Name */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Enter your name"
+                        className="rounded-lg"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        className="rounded-lg"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Bio */}
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Bio</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Write something about yourself..."
+                        className="rounded-lg"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        className="rounded-lg"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Save Button */}
+              <Button
+                type="submit"
+                className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+                hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 
+                text-white font-semibold py-2.5 shadow-md transition-all duration-300"
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="Enter your email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="bio"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bio</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Enter bio" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Password */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Enter your password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 
-                  hover:from-blue-600 hover:to-purple-700 
-                  text-white font-semibold py-2 shadow-md 
-                  transition-all duration-300 ease-in-out"
-                >
-                  Save Changes
-                </Button>
-                
-              </form>
-            </Form>
-          </div>
+                Save Changes
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
     </div>

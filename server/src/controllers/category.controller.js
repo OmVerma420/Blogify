@@ -61,12 +61,12 @@ export const deleteCategory = asyncHandler( async (req , res) => {
     if (!categoryId) throw new ApiError(400, "Category ID is required");
 
     const deletedCategory = await Category.findByIdAndDelete(categoryId);
-    if (!deletedCategory) throw new ApiError(404, "Category not found");
+    if (!deletedCategory) throw new ApiError(404,"Category not found");
 
 
      return res
     .status(200)
-    .json(new ApiResponse(200, "Category deleted successfully"));
+    .json(new ApiResponse(200,null, "Category deleted successfully"));
 });
 
 export const getAllCategory = asyncHandler( async (req , res) => {

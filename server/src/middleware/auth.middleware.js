@@ -16,13 +16,15 @@ export const verifyJWT = asyncHandler(async(req, _, next) => {
      }
  
      const decodedToken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET)
+     
 
      if(!decodedToken){
       throw new ApiError(401 , "token is invalid")
      }
  
      const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
- 
+     console.log("Decoded Token User:", decodedToken);
+
      if(!user){
          throw new ApiError(401 , "Invalid Access Token")
      }
@@ -35,3 +37,45 @@ export const verifyJWT = asyncHandler(async(req, _, next) => {
     
    }
 })
+
+
+
+export const onlyAdmin = asyncHandler(async(req, _, next) => {
+   try {
+     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+    //  console.log("Received token:", token); 
+    //  console.log("Authorization Header:", req.header("Authorization"));
+    //  console.log("Cookies:", req.cookies);
+    
+     if(!token){
+         throw new ApiError(401 , "Unauthorized request")
+     }
+ 
+     const decodedToken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET)
+
+     if(!decodedToken){
+      throw new ApiError(401 , "token is invalid")
+     }
+ 
+     const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
+     console.log("Decoded Token User:", decodedToken);
+
+ 
+     if(!user){
+         throw new ApiError(401 , "Invalid Access Token")
+     }
+     if(user.role === 'admin'){
+       req.user = user;
+       next()
+     }
+     else{
+      throw new ApiError(401 , "Unauthorized request")
+     }
+ 
+   } catch (error) {
+    console.error("JWT verification error:", error.message)
+    throw new ApiError(401 , error?.message || "Unauthorized request")
+    
+   }
+})
+

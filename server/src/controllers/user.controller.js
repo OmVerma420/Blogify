@@ -24,8 +24,16 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
   // update fields
   user.name = data.name || user.name;
-  user.email = data.email || user.email;
   user.bio = data.bio || user.bio;
+
+  // check email uniqueness if changing
+  if (data.email && data.email !== user.email) {
+    const existingUser = await User.findOne({ email: data.email });
+    if (existingUser) {
+      throw new ApiError(400, "Email already in use");
+    }
+    user.email = data.email;
+  }
 
   // update password only if provided
   if (data.password && data.password.length >= 5) {
@@ -33,14 +41,16 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   }
 
   if (req.file) {
-    const avatarLocalPath = req.file.path;
-    const avatar = await uploadOnCloudinary(avatarLocalPath);
-
-    if (!avatar.url) {
-      throw new ApiError(400, "Error while uploading avatar");
+    try {
+      const avatar = await uploadOnCloudinary(req.file.buffer);
+      if (!avatar || !avatar.url) {
+        throw new ApiError(400, "Error while uploading avatar");
+      }
+      user.avatar = avatar.url;
+      
+    } catch (error) {
+      throw new ApiError(400, "Failed to upload avatar: " + error.message);
     }
-    user.avatar = avatar.url;
-    console.log("Uploaded avatar URL:", avatar.url);
   }
 
   await user.save(); // run pre("save")
@@ -51,3 +61,14 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
   return res.status(200).json(new ApiResponse(200, newUser, "Data updated."));
 });
+
+export const getAllUser = asyncHandler(async(req,res) =>{
+  const user = await User.find().sort({createdAt:-1})
+  return res.status(200).json(new ApiResponse(200, user, "All user are fetched"));
+})
+
+export const deleteUser = asyncHandler(async(req,res) =>{
+  const {id} = req.params
+  const user = await User.findByIdAndDelete(id)
+  return res.status(200).json(new ApiResponse(200,  "Data deleted"));
+})

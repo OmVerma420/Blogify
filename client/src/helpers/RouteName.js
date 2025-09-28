@@ -22,4 +22,12 @@ export const RouteBlogByCategory = (category) => {
 
   }
 };
-
+export const RouteSearch = (q)=>{
+  if (q) {
+    return `/search?q=${q}`
+  } else {
+    return `/search`
+  }
+}
+export const RouteComment = '/comment/get-all-comments'
+export const RouteUser = '/user/get-all-user'

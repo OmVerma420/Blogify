@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes ,Route } from 'react-router-dom'
-import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory, RouteBlog, RouteAddBlog, RouteEditBlog, RouteBlogDetails, RouteBlogByCategory } from './helpers/routeName'
+import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory, RouteBlog, RouteAddBlog, RouteEditBlog, RouteBlogDetails, RouteBlogByCategory, RouteSearch, RouteComment, RouteUser } from './helpers/routeName'
 import Index from './pages'
 import Layout from './Layout/layout'
 import AuthLayout from './Layout/authLayout'
@@ -15,6 +15,11 @@ import { BlogDetails } from './pages/blog/blogDetail'
 import EditBlog from './pages/blog/editBlog'
 import BlogPage from './pages/blogPage'
 import BlogByCategory from './pages/blog/blogByCategory'
+import SearchResult from './pages/searchResult'
+import Comment from './pages/commentDetail.jsx'
+import Users from './pages/users'
+import AuthRouteProtection from './components/ui/authRouteProtection'
+import OnlyAdminAllowed from './components/ui/onlyAdminAllowed'
 
 function App() {
   return (
@@ -22,21 +27,29 @@ function App() {
         <Routes>
           <Route path={RouteIndex} element={<Layout />}>
             <Route index element={<Index />} />
-            <Route path={RouteProfile} element={<Profile />}/>
-
-            {/* blog Category */}
-            <Route path={RouteCategoryDetails} element={<CategoryDetails />}/>
-            <Route path={RouteAddCategory} element={<AddCategory />}/>
-            <Route path={RouteEditCategory} element={<EditCategory />}/>
+            
             <Route path={RouteBlogDetails()} element={<BlogPage />} />
             <Route path={RouteBlogByCategory()} element={<BlogByCategory/>}/>
+            <Route path={RouteSearch()} element={<SearchResult/>}/>
 
 
-
-            {/* blog */}
+            <Route element={<AuthRouteProtection/>}>
             <Route path={RouteBlog} element={<BlogDetails/>}/>
             <Route path={RouteAddBlog} element={<AddBlog />}/>
             <Route path={RouteEditBlog} element={<EditBlog/>}/>
+            <Route path={RouteComment} element={<Comment/>}/>
+            <Route path={RouteProfile} element={<Profile />}/>
+            </Route>
+
+            <Route element={<OnlyAdminAllowed/>}>
+            <Route path={RouteCategoryDetails} element={<CategoryDetails />}/>
+            <Route path={RouteAddCategory} element={<AddCategory />}/>
+            <Route path={RouteEditCategory} element={<EditCategory />}/>
+            <Route path={RouteUser} element={<Users/>}/>
+            </Route>
+
+
+            {/* blog */}
 
           </Route>
 

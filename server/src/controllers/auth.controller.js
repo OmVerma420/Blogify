@@ -123,7 +123,7 @@ export const GoogleLogin = asyncHandler(async (req, res) => {
   const { email, name, avatar } = req.body;
 
   if (!email || !name) {
-    throw new ApiError(400, "Email and name are required from Google login");
+    throw new ApiError(400, "User logged In Successfully");
   }
 
   let user = await User.findOne({ email });
@@ -158,9 +158,7 @@ export const GoogleLogin = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { user: await User.findById(user._id).select("-password"), accessToken, refreshToken },
-        user.createdAt === user.updatedAt
-          ? "User registered and logged in successfully"
-          : "User logged in successfully"
+        "User logged In Successfully"
       )
     );
 });

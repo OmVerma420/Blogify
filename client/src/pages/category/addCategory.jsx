@@ -16,8 +16,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import slugify from "slugify";
 import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
+import { useDispatch } from "react-redux";
+import { triggerRefresh } from "@/redux/category/category.slice";
 
 function AddCategory() {
+  const dispatch = useDispatch();
+
   const formSchema = z.object({
     name: z.string().min(2, "Name should be atleast two character long"),
     slug: z.string().min(3, "Slug should be atleast three character long"),
@@ -59,6 +63,7 @@ function AddCategory() {
           }
           form.reset()
           showToast("success", data?.message);
+          dispatch(triggerRefresh());
           
         } catch (error) {
           showToast("error", error?.message);

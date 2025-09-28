@@ -10,15 +10,14 @@ import { RouteBlogDetails } from "@/helpers/routeName";
 
 function BlogCard({ props }) {
   const user = useSelector((state) => state.user);
-
   const content = (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
             <Avatar className="w-10 h-10">
-              <AvatarImage src={props.featuredImage || ""} />
-              <AvatarFallback>{props.author?.name?.[0]}</AvatarFallback>
+              <AvatarImage src={props.author?.avatar || ""} />
+              <AvatarFallback>{props.author?.name?.[0] || "U"}</AvatarFallback>
 
             </Avatar>
             <span className="text-base font-semibold">{props.author.name}</span>

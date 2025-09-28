@@ -13,9 +13,7 @@ function RelatedBlog({ categorySlug , currentBlog }) {
     },
     [categorySlug]
   );
-  console.log(categorySlug)
-  // console.log(data)
-    console.log(currentBlog)
+ 
 
   if (loading) return <div className="text-center py-6 text-gray-500">Loading related blogs...</div>;
   if (error) return <div className="text-center text-red-500">Error: {error.message}</div>;

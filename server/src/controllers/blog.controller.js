@@ -109,7 +109,14 @@ export const deleteBlog = asyncHandler(async (req, res) => {
 });
 
 export const showAllBlog = asyncHandler(async (req, res) => {
-  const blog = await Blog.find().populate('author','name avatar role').populate('category','name slug').sort({ createdAt: -1}).lean().exec()
+  const user = req.user
+  console.log(user)
+  let blog;
+  if(user.role === 'admin'){
+    blog = await Blog.find().populate('author','name avatar role').populate('category','name slug').sort({ createdAt: -1}).lean().exec()
+  } else{
+    blog = await Blog.find({author :user._id}).populate('author','name avatar role').populate('category','name slug').sort({ createdAt: -1}).lean().exec()
+  }
 
   return res
     .status(200)
@@ -157,6 +164,36 @@ export const getBlogByCategory = asyncHandler(async(req, res)=>{
 
   return res
     .status(200)
-    .json(new ApiResponse(200,blog, "All Related blogs of same category are fetched successfully"));
+    .json(new ApiResponse(200,{blog, categoryData}, "All Related blogs of same category are fetched successfully"));
 
 })
+
+export const search = asyncHandler(async(req, res)=>{
+  const {q} = req.query
+
+  const categoryIds = await Category.find({name: {$regex: q, $options:'i'}}).select('_id').lean().exec();
+  const categoryIdList = categoryIds.map(c => c._id);
+
+  const blog = await Blog.find({
+    $or: [
+      {title: {$regex: q, $options:'i'}},
+      {blogContent: {$regex: q, $options:'i'}},
+      {category: {$in: categoryIdList}}
+    ]
+  }).populate('author','name avatar role').populate('category','name slug').lean().exec()
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200,blog, "Search results fetched successfully"));
+})
+
+
+export const getAllBlog = asyncHandler(async (req, res) => {
+  
+  const blog = await Blog.find().populate('author','name avatar role').populate('category','name slug').sort({ createdAt: -1}).lean().exec()
+  
+  
+   return res
+    .status(200)
+    .json(new ApiResponse(200,blog, "Latest 6 blogs fetched successfully"));
+});

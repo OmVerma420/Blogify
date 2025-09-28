@@ -21,12 +21,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RouteCategoryDetails } from "@/helpers/routeName";
 import { Loading } from "@/components/ui/loading";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { triggerRefresh } from "@/redux/category/category.slice";
 
 function EditCategory() {
 
   const navigate = useNavigate();
   const location = useLocation();
   const categoryId = location.state?.categoryId;
+  const dispatch = useDispatch();
 
   const formSchema = z.object({
     name: z.string().min(2, "Name should be atleast two character long"),
@@ -92,6 +95,7 @@ function EditCategory() {
           }
           form.reset()
           showToast("success", data?.message);
+          dispatch(triggerRefresh());
           navigate(RouteCategoryDetails)
         } catch (error) {
           showToast("error", error?.message);
