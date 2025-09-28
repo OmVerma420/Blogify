@@ -64,10 +64,11 @@ function BlogPage() {
           {data?.data.featuredImage && (
             <div className="mb-8">
               <img
-                src={data?.data.featuredImage}
-                alt={data?.data.title}
-                className="w-full max-h-[450px] object-cover rounded-xl shadow"
-              />
+                 src={data?.data.featuredImage}
+                 alt={data?.data.title}
+                 className="w-full h-[400px] object-cover                rounded-xl shadow"
+               />
+
             </div>
           )}
 

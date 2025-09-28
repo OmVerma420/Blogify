@@ -13,7 +13,6 @@ app.use(cors({
         
         const allowedOrigins = [
             process.env.CORS_ORIGIN,
-            'http://localhost:5174',
             'http://localhost:5173'
         ];
         

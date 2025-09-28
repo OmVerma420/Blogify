@@ -69,8 +69,11 @@ function SignIn() {
         
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <Link to={RouteIndex}>
+          <Link to={RouteIndex} className="flex items-center gap-2">
             <img src={Logo} alt="Logo" className="h-12 w-auto" />
+            <span className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-pink-500 bg-clip-text text-transparent">
+              Blogify
+            </span>
           </Link>
         </div>
 
@@ -133,10 +136,20 @@ function SignIn() {
               )}
             />
 
+            {/* Forgot Password */}
+            <div className="text-right">
+              <Link
+                to="#"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded-xl bg-blue-600 py-2 text-white font-semibold shadow hover:bg-blue-700 transition"
+              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-2 text-white font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition"
             >
               Sign In
             </Button>

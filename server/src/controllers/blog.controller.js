@@ -37,7 +37,7 @@ export const addBlog = asyncHandler(async (req, res) => {
     title: data.title,
     slug: data.slug,
     featuredImage : featuredImage,
-    blogContent: encode(data.blogContent)
+    blogContent: data.blogContent
   });
 
   await blog.save()
