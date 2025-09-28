@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input } from './input'
-import { RouteSearch } from '@/helpers/routeName.js'
+import { RouteSearch } from '@/helpers/RouteNames.js'
 import { useNavigate } from 'react-router-dom'
 
 function SearchBar() {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes ,Route } from 'react-router-dom'
-import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory, RouteBlog, RouteAddBlog, RouteEditBlog, RouteBlogDetails, RouteBlogByCategory, RouteSearch, RouteComment, RouteUser } from './helpers/routeName.js'
+import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory, RouteBlog, RouteAddBlog, RouteEditBlog, RouteBlogDetails, RouteBlogByCategory, RouteSearch, RouteComment, RouteUser } from './helpers/RouteNames.js'
 import Index from './pages/index.jsx'
 import Layout from './Layout/layout.jsx'
 import AuthLayout from './Layout/authLayout.jsx'

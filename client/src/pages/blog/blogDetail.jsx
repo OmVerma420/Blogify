@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RouteAddBlog, RouteEditBlog } from "@/helpers/routeName";
+import { RouteAddBlog, RouteEditBlog } from "@/helpers/RouteNames.js";
 import { showToast } from "@/helpers/showToast";
 import { Loading } from "@/components/ui/loading";
 import { getEnv } from "@/helpers/getEnv";

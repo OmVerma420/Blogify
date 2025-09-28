@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { RouteBlogDetails } from "@/helpers/routeName";
+import { RouteBlogDetails } from "@/helpers/RouteNames.js";
 
 function BlogCard({ props }) {
   const user = useSelector((state) => state.user);

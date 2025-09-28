@@ -23,7 +23,7 @@ import {
   RouteComment,
   RouteIndex,
   RouteUser,
-} from "@/helpers/routeName.js";
+} from "@/helpers/RouteNames.js";
 import { useFetch } from "@/hooks/useFetch";
 import { getEnv } from "@/helpers/getEnv";
 import { useSelector } from "react-redux";

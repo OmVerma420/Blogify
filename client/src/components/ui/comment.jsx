@@ -16,7 +16,7 @@ import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
 import { Textarea } from "./textarea";
 import { useSelector } from "react-redux";
-import { RouteSignIn } from "@/helpers/routeName";
+import { RouteSignIn } from "@/helpers/RouteNames.js";
 import { Link } from "react-router-dom";
 import CommentList from "./commentList";
 

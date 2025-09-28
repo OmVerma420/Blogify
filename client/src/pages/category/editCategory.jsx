@@ -18,7 +18,7 @@ import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
 import { useFetch } from "@/hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
-import { RouteCategoryDetails } from "@/helpers/routeName";
+import { RouteCategoryDetails } from "@/helpers/RouteNames.js";
 import { Loading } from "@/components/ui/loading";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";

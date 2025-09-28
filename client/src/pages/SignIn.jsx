@@ -12,7 +12,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { RouteIndex, RouteSignUp } from "@/helpers/routeName";
+import { RouteIndex, RouteSignUp } from "@/helpers/RouteNames.js";
 import { Link, useNavigate } from "react-router-dom";
 import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";

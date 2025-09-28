@@ -9,7 +9,7 @@ import {
   RouteProfile,
   RouteSignIn,
   RouteSignUp,
-} from "@/helpers/routeName";
+} from "@/helpers/RouteNames.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DropdownMenu,

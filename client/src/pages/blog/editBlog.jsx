@@ -29,7 +29,7 @@ import Editor from "@/components/ui/Editor";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { RouteBlog } from "@/helpers/routeName";
+import { RouteBlog } from "@/helpers/RouteNames.js";
 import { Loading } from "@/components/ui/loading";
 import { toast } from "react-toastify";
 import { decode } from "entities";

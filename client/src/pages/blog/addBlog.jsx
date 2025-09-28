@@ -29,7 +29,7 @@ import Editor from "@/components/ui/Editor";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
 import { useNavigate } from "react-router-dom";
-import { RouteBlog } from "@/helpers/routeName";
+import { RouteBlog } from "@/helpers/RouteNames.js";
 
 function AddBlog() {
 

@@ -1,4 +1,4 @@
-import { RouteIndex, RouteSignIn } from '@/helpers/routeName'
+import { RouteIndex, RouteSignIn } from '@/helpers/RouteNames.js'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'

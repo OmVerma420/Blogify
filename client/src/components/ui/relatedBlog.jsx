@@ -1,5 +1,5 @@
 import { getEnv } from '@/helpers/getEnv';
-import { RouteBlogDetails } from '@/helpers/routeName';
+import { RouteBlogDetails } from '@/helpers/RouteNames.js';
 import { useFetch } from '@/hooks/useFetch';
 import React from 'react';
 import { Link } from 'react-router-dom';
