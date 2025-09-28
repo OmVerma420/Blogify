@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 import { FaSignInAlt, FaRegUser } from "react-icons/fa";
-import { Button } from "../ui/button";
-import SearchBar from "../ui/searchBar";
+import { Button } from "../ui/button.jsx";
+import SearchBar from "../ui/SearchBar.jsx";
 import {
   RouteAddBlog,
   RouteProfile,
@@ -23,10 +23,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import userimg from "@/assets/user.png";
 import { IoCreateOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
-import { showToast } from "@/helpers/showToast";
-import { removeUser } from "@/redux/user/user.slice";
-import { getEnv } from "@/helpers/getEnv";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { showToast } from "@/helpers/showToast.js";
+import { removeUser } from "@/redux/user/user.slice.js";
+import { getEnv } from "@/helpers/getEnv.js";
+import { SidebarTrigger } from "@/components/ui/sidebar.jsx";
 import { Menu, Search } from "lucide-react";
 
 const Header = () => {
