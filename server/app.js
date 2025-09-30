@@ -13,7 +13,8 @@ app.use(cors({
         
         const allowedOrigins = [
             process.env.CORS_ORIGIN,
-            'http://localhost:5173'
+            'http://localhost:5173',
+            'http://localhost:5174'
         ];
         
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -30,6 +31,10 @@ app.use(express.urlencoded({extended: true , limit: "5mb"}))
 app.use(express.static("public"))
 app.use(cookieParser()) //This middleware allows you to read cookies sent from the browser via req.cookies.
 //it help in Reading the accessToken or refreshToken cookie for authentication
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  next();
+});
 
 import routes from "./src/routes/routes.js";
 import { errorHandler } from "./src/middleware/errorsHandler.middleware.js";
