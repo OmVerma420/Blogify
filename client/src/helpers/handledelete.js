@@ -10,6 +10,8 @@ export const deleteData = async (endPoint, id) => {
         url = `${endPoint}/${id}`;
       } else if (endPoint.includes('category')) {
         url = `${endPoint}/${id}`;
+      } else if (endPoint.includes('comment')) {
+        url = `${endPoint}/${id}`;
       } else {
         // fallback to old way
         const key = endPoint.includes('blog') ? 'blog_id' : 'category_id';

@@ -27,7 +27,8 @@ function Comment() {
 
   const handleDelete = async (id) => {
     const isDelete = await deleteData(
-      `${getEnv("VITE_API_BASE_URL")}/auth/comment/delete-comment/${id}`
+      `${getEnv("VITE_API_BASE_URL")}/auth/comment/delete-comment`,
+      id
     );
 
     if (isDelete) {
