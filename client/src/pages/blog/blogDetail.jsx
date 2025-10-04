@@ -39,9 +39,9 @@ export function BlogDetails() {
 
     if (isDelete) {
       setRefreshData(!refreshData);
-      showToast("success", "Date deleted");
+      showToast("success", "Blog deleted successfully");
     } else {
-      showToast("error", "Date not deleted");
+      showToast("error", "Failed to delete blog");
     }
   };
 

@@ -42,9 +42,9 @@ function CategoryDetails() {
 
     if (isDelete) {
       dispatch(triggerRefresh());
-      showToast("success", "Date deleted");
+      showToast("success", "Category deleted successfully");
     } else {
-      showToast("error", "Date not deleted");
+      showToast("error", "Failed to delete category");
     }
   };
 
