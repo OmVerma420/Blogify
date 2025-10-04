@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter, Routes ,Route, useNavigate } from 'react-router-dom'
-import { getRedirectResult } from 'firebase/auth'
-import { auth } from './helpers/firebase'
-import { showToast } from './helpers/showToast'
-import { getEnv } from './helpers/getEnv'
-import { useDispatch } from 'react-redux'
-import { setUser } from './redux/user/user.slice'
+import React from 'react'
+import { BrowserRouter, Routes ,Route } from 'react-router-dom'
 import { RouteIndex, RouteProfile, RouteSignIn, RouteSignUp, RouteCategoryDetails, RouteAddCategory, RouteEditCategory, RouteBlog, RouteAddBlog, RouteEditBlog, RouteBlogDetails, RouteBlogByCategory, RouteSearch, RouteComment, RouteUser } from './helpers/RouteNames.js'
 import Index from './pages/Index.jsx'
 import Layout from './Layout/Layout.jsx'
@@ -26,53 +20,16 @@ import Comment from './pages/commentDetail.jsx'
 import Users from './pages/users.jsx'
 import AuthRouteProtection from './components/ui/authRouteProtection.jsx'
 import OnlyAdminAllowed from './components/ui/onlyAdminAllowed.jsx'
+import GoogleAuthHandler from './components/ui/GoogleAuthHandler.jsx'
 
 function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result) {
-          const user = result.user;
-          const bodyData = {
-            name: user.displayName,
-            email: user.email,
-            avatar: user.photoURL,
-          };
-          const response = await fetch(
-            `${getEnv("VITE_API_BASE_URL")}/auth/google-login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-              body: JSON.stringify(bodyData),
-            }
-          );
-          const data = await response.json();
-          if (!response.ok) {
-            showToast("error", data?.message || "Login failed");
-            return;
-          }
-          showToast("success", data?.message || "Login successful");
-          dispatch(setUser(data.data.user));
-          navigate(RouteIndex);
-        }
-      } catch (error) {
-        showToast("error", "Google login failed");
-      }
-    };
-    handleRedirectResult();
-  }, [dispatch, navigate]);
-
   return (
       <BrowserRouter>
+        <GoogleAuthHandler />
         <Routes>
           <Route path={RouteIndex} element={<Layout />}>
             <Route index element={<Index />} />
-            
+
             <Route path={RouteBlogDetails()} element={<BlogPage />} />
             <Route path={RouteBlogByCategory()} element={<BlogByCategory/>}/>
             <Route path={RouteSearch()} element={<SearchResult/>}/>
@@ -99,7 +56,7 @@ function App() {
           </Route>
 
 
-          
+
 
           <Route path={RouteSignIn} element={<AuthLayout />}>
             <Route index element={<SignIn/>}/>
