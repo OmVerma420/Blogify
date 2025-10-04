@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 function OnlyAdminAllowed() {
     const user = useSelector(state => state.user)
-    console.log(user)
+    
     if(user && user.status && user.userData.role === 'admin'){
         return (
           <Outlet/>
