@@ -43,7 +43,7 @@ export const addBlog = asyncHandler(async (req, res) => {
   await blog.save()
   return res
     .status(200)
-    .json(new ApiResponse(200, "Blog created successfully"));
+    .json(new ApiResponse(200, "Blog added successfully"));
 });
 
 export const editBlog = asyncHandler(async (req, res) => {
@@ -71,7 +71,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
   blog.category = data.category;
   blog.title = data.title;
   blog.slug = data.slug;
-  blog.blogContent = encode(data.blogContent);
+  blog.blogContent = data.blogContent
 
   if (req.file) {
     // upload new file
@@ -88,7 +88,6 @@ export const updateBlog = asyncHandler(async (req, res) => {
   await blog.save();
 
 
-  await blog.save()
   return res
     .status(200)
     .json(new ApiResponse(200, "Blog updated successfully"));
@@ -110,6 +109,7 @@ export const deleteBlog = asyncHandler(async (req, res) => {
 
 export const showAllBlog = asyncHandler(async (req, res) => {
   const user = req.user
+  console.log(user)
   let blog;
   if(user.role === 'admin'){
     blog = await Blog.find().populate('author','name avatar role').populate('category','name slug').sort({ createdAt: -1}).lean().exec()

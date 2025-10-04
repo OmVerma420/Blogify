@@ -11,6 +11,12 @@ import moment from "moment";
 import LikeCount from '@/components/ui/likeCount';
 import RelatedBlog from '@/components/ui/relatedBlog';
 
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+}
+
 function BlogPage() {
   const { category, blog } = useParams();
 
@@ -73,12 +79,9 @@ function BlogPage() {
           )}
 
           {/* Blog Content */}
-          <div
-            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-            dangerouslySetInnerHTML={{
-              __html: decode(data?.data.blogContent) || "",
-            }}
-          />
+          <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            {stripHtml(decode(data?.data.blogContent) || "")}
+          </div>
 
           {/* Comment Section */}
           <div className="mt-12 border-t ">
