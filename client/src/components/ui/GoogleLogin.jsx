@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "./button";
 import { FcGoogle } from "react-icons/fc";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, provider } from "@/helpers/firebase";
 import { RouteIndex } from "@/helpers/RouteNames.js";
 import { showToast } from "@/helpers/showToast";
@@ -17,48 +17,17 @@ function GoogleLogin() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (isLoading) return; // already running request
+    if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const googleResponse = await signInWithPopup(auth, provider);
-      const user = googleResponse.user;
-
-      const bodyData = {
-        name: user.displayName,
-        email: user.email,
-        avatar: user.photoURL,
-      };
-
-      const response = await fetch(
-        `${getEnv("VITE_API_BASE_URL")}/auth/google-login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(bodyData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        showToast("error", data?.message || "Login failed");
-        return;
-      }
-
-      showToast("success", data?.message || "Login successful");
-      dispatch(setUser(data.data.user)) // Assuming the user data is in data.user
-      navigate(RouteIndex);
-
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       const friendlyMessage =
       firebaseErrorMessages[error.code] ||
       error?.message ||
       "Something went wrong. Please try again.";
       showToast("error", friendlyMessage);
-      
-    } finally {
       setIsLoading(false);
     }
   };
