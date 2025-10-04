@@ -14,7 +14,8 @@ app.use(cors({
         const allowedOrigins = [
             process.env.CORS_ORIGIN,
             'http://localhost:5173',
-            'http://localhost:5174'
+            'http://localhost:5174',
+            'https://blogify-pzaq.vercel.app'
         ];
         
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
   next();
 });
+
 
 import routes from "./src/routes/routes.js";
 import { errorHandler } from "./src/middleware/errorsHandler.middleware.js";

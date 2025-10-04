@@ -16,6 +16,7 @@ const uploadOnCloudinary = (fileBuffer, folder = "") => {
       {
         resource_type: "auto",
         folder: folder || undefined,
+        secure: true,
       },
       (error, result) => {
         if (error) return reject(error);
