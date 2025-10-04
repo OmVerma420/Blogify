@@ -46,8 +46,8 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       if (!avatar || !avatar.url) {
         throw new ApiError(400, "Error while uploading avatar");
       }
-      user.avatar = avatar.url;
-      
+      user.avatar = avatar.secure_url;
+
     } catch (error) {
       throw new ApiError(400, "Failed to upload avatar: " + error.message);
     }

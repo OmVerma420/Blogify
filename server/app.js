@@ -36,6 +36,11 @@ app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
   next();
 });
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none"); // default if not needed
+  next();
+});
+
 
 
 import routes from "./src/routes/routes.js";
