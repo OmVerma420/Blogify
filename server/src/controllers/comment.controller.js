@@ -14,7 +14,7 @@ export const addcomment = asyncHandler(async(req , res)=>{
 
     return res
     .status(200)
-    .json(new ApiResponse(200, newComment, "Comment posted successfully."));
+    .json(new ApiResponse(200, newComment, "Comment added successfully."));
 
 })
 

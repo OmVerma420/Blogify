@@ -43,7 +43,7 @@ export const addBlog = asyncHandler(async (req, res) => {
   await blog.save()
   return res
     .status(200)
-    .json(new ApiResponse(200, "Blog created successfully"));
+    .json(new ApiResponse(200, "Blog added successfully"));
 });
 
 export const editBlog = asyncHandler(async (req, res) => {

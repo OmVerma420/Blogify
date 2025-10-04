@@ -14,7 +14,7 @@ export const addCategory = asyncHandler( async (req , res) => {
     res
     .status(200)
     .json(
-        new ApiResponse(200, null, "Category created successfully" )
+        new ApiResponse(200, null, "Category added successfully" )
     )
 })
 
