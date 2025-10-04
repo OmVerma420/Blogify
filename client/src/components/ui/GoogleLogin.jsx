@@ -17,17 +17,48 @@ function GoogleLogin() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (isLoading) return;
+    if (isLoading) return; // already running request
     setIsLoading(true);
 
     try {
-      await signInWithRedirect(auth, provider);
+      const googleResponse = await signInWithPopup(auth, provider);
+      const user = googleResponse.user;
+
+      const bodyData = {
+        name: user.displayName,
+        email: user.email,
+        avatar: user.photoURL,
+      };
+
+      const response = await fetch(
+        `${getEnv("VITE_API_BASE_URL")}/auth/google-login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(bodyData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showToast("error", data?.message || "Login failed");
+        return;
+      }
+
+      showToast("success", data?.message || "Login successful");
+      dispatch(setUser(data.data.user)) // Assuming the user data is in data.user
+      navigate(RouteIndex);
+
     } catch (error) {
       const friendlyMessage =
       firebaseErrorMessages[error.code] ||
       error?.message ||
       "Something went wrong. Please try again.";
       showToast("error", friendlyMessage);
+      
+    } finally {
       setIsLoading(false);
     }
   };
