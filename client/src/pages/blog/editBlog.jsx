@@ -168,7 +168,7 @@ function EditBlog() {
       showToast("success", data?.message);
       
     } catch (error) {
-      showToast("error", error?.message);
+      showToast("error", "Failed to update blog. Please try again.");
     }
   };
 

@@ -57,7 +57,7 @@ function Comment({ blogId }) {
       form.reset();
       showToast("success", data?.message);
     } catch (error) {
-      showToast("error", error?.message);
+      showToast("error", "Failed to add comment. Please try again.");
     }
   };
 

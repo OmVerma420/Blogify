@@ -43,11 +43,11 @@ function GoogleLogin() {
       const data = await response.json();
 
       if (!response.ok) {
-        showToast("error", data?.message || "Login failed");
+        showToast("error", data?.message || "Google login failed");
         return;
       }
 
-      showToast("success", data?.message || "Login successful");
+      showToast("success", data?.message || "Google login successful");
       dispatch(setUser(data.data.user)) // Assuming the user data is in data.user
       navigate(RouteIndex);
 

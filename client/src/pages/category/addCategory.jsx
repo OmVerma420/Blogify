@@ -66,7 +66,7 @@ function AddCategory() {
           dispatch(triggerRefresh());
           
         } catch (error) {
-          showToast("error", error?.message);
+          showToast("error", "Failed to add category. Please try again.");
         }
   };
 

@@ -86,7 +86,7 @@ function Profile() {
       setPreview(null);
       setAvatar(null);
     } catch (error) {
-      showToast("error", error?.message);
+      showToast("error", "Failed to update profile. Please try again.");
     }
   };
 

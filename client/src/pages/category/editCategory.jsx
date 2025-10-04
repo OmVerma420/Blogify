@@ -98,7 +98,7 @@ function EditCategory() {
           dispatch(triggerRefresh());
           navigate(RouteCategoryDetails)
         } catch (error) {
-          showToast("error", error?.message);
+          showToast("error", "Failed to update category. Please try again.");
         }
   };
 

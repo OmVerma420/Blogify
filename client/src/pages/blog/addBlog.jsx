@@ -122,7 +122,7 @@ function AddBlog() {
       showToast("success", data?.message);
       
     } catch (error) {
-      showToast("error", error?.message);
+      showToast("error", "Failed to add blog. Please try again.");
     }
   };
 

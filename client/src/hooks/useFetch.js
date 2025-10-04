@@ -9,7 +9,10 @@ export const useFetch = (url, options = {}, dependencies = []) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(url, options);
+        const response = await fetch(url, {
+          ...options,
+          credentials: "include", // Include cookies for authentication
+        });
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message || "Something went wrong");
