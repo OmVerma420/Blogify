@@ -1,6 +1,9 @@
-🚀 Blogify
+Blogify: Full-Stack MERN Content Platform
+A feature-rich, full-stack blog platform built with the MERN stack (MongoDB, Express.js, React, Node.js), featuring secure authentication, a rich text editor, and a modern, responsive UI.
 
-A full-stack blog platform built with the MERN stack, designed to provide a seamless and rich user experience for creating, managing, and engaging with blog content.
+📍 Live Demo & Video
+Live Application	Video Walkthrough (2 mins)
+blogify-pzaq.vercel.app	View on Vimeo
 
 Blogify enables users to:
 ✅ Authenticate securely (JWT + Google OAuth)
