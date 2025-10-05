@@ -116,3 +116,110 @@ Works across devices
 📺 Demo Video: https://vimeo.com/1124575698?share=copy
 
 🌐 Live Demo: https://blogify-pzaq.vercel.app
+
+⚙️ Installation & Setup
+Prerequisites
+
+Node.js (v18+)
+
+MongoDB (local/Atlas)
+
+Git
+
+Clone the Repo
+git clone <your-repo-url>
+cd blogify
+
+Backend Setup
+cd server
+npm install
+
+Frontend Setup
+cd ../client
+npm install
+
+Environment Variables
+
+Server (.env):
+
+PORT=8000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_secret
+CLOUDINARY_CLOUD_NAME=xxxx
+CLOUDINARY_API_KEY=xxxx
+CLOUDINARY_API_SECRET=xxxx
+FRONTEND_URL=http://localhost:5173
+
+
+Client (.env):
+
+VITE_API_BASE_URL=http://localhost:8000/api
+VITE_FIREBASE_API_KEY=xxxx
+VITE_FIREBASE_AUTH_DOMAIN=xxxx
+VITE_FIREBASE_PROJECT_ID=xxxx
+
+Run the Project
+
+Backend:
+
+cd server
+npm run dev
+
+
+Frontend:
+
+cd client
+npm run dev
+
+
+Access frontend: http://localhost:5173
+
+API server: http://localhost:8000
+
+📂 Project Structure
+blogify/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # UI components
+│   │   ├── pages/          # Page views
+│   │   ├── redux/          # Redux slices & store
+│   │   ├── hooks/          # Custom hooks
+│   │   └── lib/            # Config & utilities
+│   └── package.json
+├── server/                 # Express backend
+│   ├── src/
+│   │   ├── controllers/    # Route controllers
+│   │   ├── middleware/     # Middlewares
+│   │   ├── models/         # MongoDB models
+│   │   ├── routes/         # API endpoints
+│   │   └── utils/          # Helpers
+│   └── package.json
+└── README.md
+
+🤝 Contribution
+
+Contributions are welcome!
+
+Fork the repo
+
+Create a branch (git checkout -b feature/xyz)
+
+Commit your changes (git commit -m 'Added xyz feature')
+
+Push to branch (git push origin feature/xyz)
+
+Create a Pull Request
+
+📄 License
+
+This project is licensed under the ISC License.
+
+👨‍💻 Author
+
+[Om Verma]
+
+🌐 GitHub: [Your GitHub Profile]
+
+💼 LinkedIn: [Your LinkedIn Profile]
+
+🔥 Built with passion using the MERN stack
