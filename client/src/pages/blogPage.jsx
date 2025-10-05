@@ -7,6 +7,7 @@ import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import moment from "moment";
+import { decode } from 'entities';
 import LikeCount from '@/components/ui/likeCount';
 import RelatedBlog from '@/components/ui/relatedBlog';
 
@@ -79,7 +80,7 @@ function BlogPage() {
 
           {/* Blog Content */}
           <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {stripHtml(data?.data.blogContent || "")}
+            {stripHtml(decode(data?.data.blogContent) || "")}
           </div>
 
           {/* Comment Section */}
