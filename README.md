@@ -117,6 +117,7 @@ Works across devices
 
 🌐 Live Demo: https://blogify-pzaq.vercel.app
 
+
 ⚙️ Installation & Setup
 Prerequisites
 
@@ -176,26 +177,6 @@ Access frontend: http://localhost:5173
 
 API server: http://localhost:8000
 
-📂 Project Structure
-blogify/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # UI components
-│   │   ├── pages/          # Page views
-│   │   ├── redux/          # Redux slices & store
-│   │   ├── hooks/          # Custom hooks
-│   │   └── lib/            # Config & utilities
-│   └── package.json
-├── server/                 # Express backend
-│   ├── src/
-│   │   ├── controllers/    # Route controllers
-│   │   ├── middleware/     # Middlewares
-│   │   ├── models/         # MongoDB models
-│   │   ├── routes/         # API endpoints
-│   │   └── utils/          # Helpers
-│   └── package.json
-└── README.md
-
 🤝 Contribution
 
 Contributions are welcome!
@@ -218,8 +199,8 @@ This project is licensed under the ISC License.
 
 [Om Verma]
 
-🌐 GitHub: [Your GitHub Profile]
+🌐 GitHub: https://github.com/OmVerma420
 
-💼 LinkedIn: [Your LinkedIn Profile]
+💼 LinkedIn: https://www.linkedin.com/in/me/
 
 🔥 Built with passion using the MERN stack
