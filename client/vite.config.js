@@ -1,4 +1,3 @@
-// client/vite.config.js
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -10,4 +9,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: "dist" // Vercel expects your build output here
+  },
+  server: {
+    historyApiFallback: true // ensures SPA fallback in dev
+  }
 });
