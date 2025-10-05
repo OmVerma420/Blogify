@@ -1,3 +1,4 @@
+
 # Blogify: Full-Stack MERN Content Platform
 
 A feature-rich, full-stack blog platform built with the MERN stack (MongoDB, Express.js, React, Node.js), featuring secure authentication, a rich text editor, and a modern, responsive UI.
@@ -141,3 +142,4 @@ Let's connect! You can find me on:
 ---
 
 *Made with using MERN Stack*
+=======
